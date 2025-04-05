@@ -1,0 +1,13 @@
+# Node
+node_modules/
+.env
+
+# Prisma
+.prisma/
+
+# Logs
+*.log
+
+# Sistema
+.DS_Store
+Thumbs.db
