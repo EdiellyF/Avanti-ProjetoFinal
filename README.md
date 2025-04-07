@@ -10,7 +10,7 @@
 
 ## 📋 Descrição do Projeto
 
-O **Nome do projeto** é uma aplicação web desenvolvida com o objetivo de ajudar pessoas a registrarem objetos perdidos ou encontrados em espaços públicos como escolas, praças ou centros comunitários. A proposta é criar uma ponte entre quem perdeu e quem encontrou objetos, sem necessidade de login.
+O **[Nome do projeto]** é uma aplicação web desenvolvida com o objetivo de ajudar pessoas a registrarem objetos perdidos ou encontrados em espaços públicos como escolas, praças ou centros comunitários. A proposta é criar uma ponte entre quem perdeu e quem encontrou objetos, sem necessidade de login.
 
 ---
 
@@ -53,8 +53,24 @@ O **Nome do projeto** é uma aplicação web desenvolvida com o objetivo de ajud
 
 ---
 
-## 📁 Estrutura de Pastas
+## 🤝 Colaboradores
 
-## 📄 Licença
+Agradecemos às seguintes pessoas que contribuíram para este projeto:
 
-Este projeto é apenas para fins educacionais no bootcamp Avanti Desenvolvimento Full Stack Básico - 2025.1.
+<!-- <table>
+  <tr>
+    <td align="center">
+      <a href="#" title="João Evangelista(joaoev)">
+        <img style="border-radius:50%;" src="https://avatars.githubusercontent.com/u/101232352?v=4" width="100px;" alt="Foto do João no GitHub"/><br>
+        <sub>
+          <b>João Evangelista</b>
+        </sub>
+      </a>
+    </td>
+  </tr>
+</table> -->
+
+<a href="https://github.com/joaoev/feed-filme/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=joaoev/feed-filme" alt="contrib.rocks image" />
+</a>
+
