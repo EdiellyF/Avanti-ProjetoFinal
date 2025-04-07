@@ -1,0 +1,23 @@
+name: projeto-final
+services:
+  postgresql:
+    image: bitnami/postgresql:17.4.0
+    container_name: database
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=mydb
+    volumes:
+      - data-projeto-final:/var/lib/postgresql/data
+    networks:
+      - network-projeto-final
+
+volumes:
+  data-projeto-final:
+    driver: local
+
+networks:
+  network-projeto-final:
+    driver: bridge
