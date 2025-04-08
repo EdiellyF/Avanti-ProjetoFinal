@@ -4,9 +4,9 @@ export class UserController {
   }
   async createUser(req, res) {
     try {
-      const {  email,  password } = req.body;
+      const { name, email, phone, password } = req.body;
 
-      if ( !email || !password) {
+      if (!name || !email || !phone || !password) {
         return res.status(400).json({ message: "All fields are required" });
       }
 
