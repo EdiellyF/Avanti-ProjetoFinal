@@ -12,13 +12,13 @@ export function authMiddleware(request, response, next) {
 
     const token = authorization.replace("Bearer ", "").trim();
 
-    const { id } = jwt.verify(token, process.env.JWT_SECRET);
+    const { id, role} = jwt.verify(token, process.env.JWT_SECRET);
 
     if (!id) {
       return response.status(401).json({ message: "Invalid token" });
     }
 
-    request.user = { id };
+    request.user = { id, role};
 
     return next();
   } catch (error) {
@@ -27,4 +27,13 @@ export function authMiddleware(request, response, next) {
       .status(401)
       .json({ message: "Unauthorized: Invalid token" });
   }
+
+
+
 }
+  export function isAdminMiddleware(req, res, next) {
+    if (req.user?.role !== "ADMIN" || req.user?.role !== "admin") {
+      return res.status(403).json({ message: "Apenas administradores podem realizar esta ação." });
+    }
+    next();
+  }

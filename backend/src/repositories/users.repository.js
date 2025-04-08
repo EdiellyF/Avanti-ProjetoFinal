@@ -18,7 +18,7 @@ export class UserRepository {
   }
 
 
-  async updateUser({id, email, password, phone}){
+  async updateUser({id, email, password}){
     const userExists = await this.findById(id);
     if(!userExists){
       throw new Error("Usuário não encontrado.");
