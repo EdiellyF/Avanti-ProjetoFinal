@@ -51,4 +51,14 @@ export class UserService {
 
     return token;
   }
+
+  async updateUser({id, email, password }){
+    if(password){
+       password = await bcrypt.hash(password, 6)
+    }
+    await this.userRepository.updateUser({id, email, password});
+   
+  }
+
+
 }

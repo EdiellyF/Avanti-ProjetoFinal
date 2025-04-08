@@ -15,5 +15,8 @@ router.post("/login", (req, res) => userController.login(req, res));
 router.get("/", authMiddleware, (req, res) =>
   userController.getUserById(req, res)
 );
+router.put("/:id", authMiddleware, (req,res) => {
+  userController.update(req,res)
+})
 
 export default router;
