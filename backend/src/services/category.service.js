@@ -16,10 +16,14 @@ export class CategoryService {
   }
 
   async findAllCategories(){
-    const listaCategories = await this.categoryRepository.getCategories();
-    return listaCategories;
-  }
+      const listaCategories = await this.categoryRepository.getCategories();
+      return listaCategories;
+    }
 
+  async findCategoryById({id}){
+     const category = await this.categoryRepository.getCategoryById(id);
+     return category;
+  }
 
 
 

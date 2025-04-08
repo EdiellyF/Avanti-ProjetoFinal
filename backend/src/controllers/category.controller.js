@@ -55,6 +55,23 @@ export class CategoryController {
               });
         }
     }
+
+    async getcategoryById(req, res){
+      try{
+          const id = req.body;
+          const categories = await this.categoryService.getCategoryById(id);
+
+          if(!categories){
+            return res.status(404).json({ message: "Category not found" });
+          }
+          
+          return res.status(200).json(categories);
+      }catch(error){
+          return res.status(500).json({
+            message: "Internal server error",
+          });
+      }
+    }
  
 
   }
