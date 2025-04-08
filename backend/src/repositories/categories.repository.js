@@ -5,11 +5,14 @@ export class CategoryRepository {
     return await prismaClient.category.create({ data });
   }
 
-  async findByEmail(email) {
-    return await prismaClient.category.findUnique({
-      where: { email },
+async getCategories() {
+    const categories = await prismaClient.category.findMany({
+        select: {
+            name: true
+        }
     });
-  }
+    return categories;
+}
 
   
 }

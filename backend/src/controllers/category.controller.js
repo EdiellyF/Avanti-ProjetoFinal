@@ -28,7 +28,6 @@ export class CategoryController {
     async getcategoryById(req, res) {
       try {
         const categoryId = req.category.id;
-  
         const category = await this.categoryService.getcategoryById(categoryId);
   
         if (!category) {
@@ -45,6 +44,17 @@ export class CategoryController {
       }
     }
   
+    async getAllCategory(req, res){
+        try{
+            const categories = await this.categoryService.findAllCategories();
+            return res.status(200).json(categories);
+        
+        }catch(error){
+            return res.status(500).json({
+                message: "Internal server error",
+              });
+        }
+    }
  
 
   }

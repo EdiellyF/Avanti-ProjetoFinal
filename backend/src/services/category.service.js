@@ -12,6 +12,12 @@ export class CategoryService {
     const newcategory = await this.categoryRepository.create({
       name
     });
+    return newcategory;
+  }
+
+  async findAllCategories(){
+    const listaCategories = await this.categoryRepository.getCategories();
+    return listaCategories;
   }
 
 
