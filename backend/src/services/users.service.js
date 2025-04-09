@@ -53,13 +53,25 @@ export class UserService {
     return token;
   }
 
-  async updateUser({id, email, password }){
-    if(password){
-       password = await bcrypt.hash(password, 6)
+  async updateUser({ id, email, password }) {
+    if (!id) {
+      throw new Error("ID is required to update a user");
     }
-    await this.userRepository.updateUser({id, email, password});
-   
+
+    const dataToUpdate = {};
+
+    if (email) {
+      dataToUpdate.email = email;
+    }
+
+    if (password) {
+      dataToUpdate.password = await bcrypt.hash(password, 6);
+    }
+
+    if (Object.keys(dataToUpdate).length === 0) {
+      throw new Error("At least one field (email or password) is required to update");
+    }
+
+    return await this.userRepository.updateUser({ id, ...dataToUpdate });
   }
-
-
 }

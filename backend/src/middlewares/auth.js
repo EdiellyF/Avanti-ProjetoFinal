@@ -33,8 +33,16 @@ export function authMiddleware(request, response, next) {
 
 }
   export function isAdminMiddleware(req, res, next) {
-    if (req.user?.role !== "ADMIN" || req.user?.role !== "admin") {
+    if (req.user?.role !== "ADMIN") {
       return res.status(403).json({ message: "Apenas administradores podem realizar esta ação." });
+    }
+    next();
+  }
+
+
+  export function isUser(req, res, next) {
+    if (req.user.id !== req.params.id) {
+      return res.status(403).json({ message: "Você só pode atualizar seu próprio perfil" });
     }
     next();
   }

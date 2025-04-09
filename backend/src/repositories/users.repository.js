@@ -18,18 +18,12 @@ export class UserRepository {
   }
 
 
-  async updateUser({id, email, password}){
-    const userExists = await this.findById(id);
-    if(!userExists){
-      throw new Error("Usuário não encontrado.");
-    }
-      return await prismaClient.user.update({
-        where: { id },
-        data: {
-          email,
-          password,
-        },
-    });
 
+  async updateUser({ id, ...data }) {
+    return await prismaClient.user.update({
+      where: { id },
+      data,
+    });
   }
+
 }

@@ -102,8 +102,6 @@ export class UserController {
             return res.status(400).json({ message: "Email already exists" });
           }
           
-          
-          
           const updatedUser = await this.userService.updateUser({ id, email, password });
 
             return res.status(200).json(updatedUser);

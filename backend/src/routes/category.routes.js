@@ -12,7 +12,9 @@ const categoryService = new CategoryService(categoryRepository);
 const categoryController = new CategoryController(categoryService);
 
 router.post("/", authMiddleware, isAdminMiddleware,  (req, res) => categoryController.createcategory(req,res));
-router.get("/",  (req, res) => categoryController.getAllCategory(req, res))
+router.delete("/:id", authMiddleware, isAdminMiddleware, (req, res) => categoryController.deleteCategory(req, res))
+router.get("/",  (req, res) => categoryController.getAllCategory(req, res));
+router.get("/:id", (req, res) => categoryController.findCategoryById(req, res));
 
 
 export default router;
