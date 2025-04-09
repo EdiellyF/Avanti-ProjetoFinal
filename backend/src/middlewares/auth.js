@@ -1,21 +1,23 @@
 import jwt from "jsonwebtoken";
+import { sendErrorResponse } from "./sendErrorResponse";
+import { response } from "express";
 
 export function authMiddleware(request, response, next) {
   try {
     const { authorization } = request.headers;
 
     if (!authorization) {
-      return response
-        .status(401)
-        .json({ message: "Unauthorized: No token provided" });
+      return  sendErrorResponse(response, 401,"Unauthorized: No token provided" )
     }
 
     const token = authorization.replace("Bearer ", "").trim();
 
+
+
     const { id, role} = jwt.verify(token, process.env.JWT_SECRET);
 
     if (!id) {
-      return response.status(401).json({ message: "Invalid token" });
+      return sendErrorResponse(response, 401, "Invalid token");
     }
 
     request.user = { id, role};
@@ -23,9 +25,7 @@ export function authMiddleware(request, response, next) {
     return next();
   } catch (error) {
     console.error("Error in authMiddleware:", error);
-    return response
-      .status(401)
-      .json({ message: "Unauthorized: Invalid token" });
+      return sendErrorResponse(response, 401,"Unauthorized: Invalid token" )
   }
 
 
@@ -33,16 +33,17 @@ export function authMiddleware(request, response, next) {
 
 }
   export function isAdminMiddleware(req, res, next) {
+
     if (req.user?.role !== "ADMIN") {
-      return res.status(403).json({ message: "Apenas administradores podem realizar esta ação." });
+      return sendErrorResponse(response, 403, "Apenas administradores podem realizar esta ação." )
     }
     next();
   }
-
-
   export function isUser(req, res, next) {
     if (req.user.id !== req.params.id) {
-      return res.status(403).json({ message: "Você só pode atualizar seu próprio perfil" });
+      return res.status(403).json({ message: "Você só pode atualizar seu próprio perfil ou itens relacionados a voce" });
     }
     next();
   }
+
+
