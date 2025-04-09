@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { sendErrorResponse } from "./sendErrorResponse";
+import { sendErrorResponse } from "./sendErrorResponse.js";
 import { response } from "express";
 
 export function authMiddleware(request, response, next) {

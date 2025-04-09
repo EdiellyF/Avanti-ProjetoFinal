@@ -63,6 +63,7 @@ model Item {
   foto        String?
   status      Status
 
+
   categoriaId String @db.Uuid
   categoria   Category @relation(fields: [categoriaId], references: [id])
 
