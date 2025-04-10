@@ -1,6 +1,9 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { ValidationError, NotFoundError } from "../utils/customErrors.js";
+
+
 
 dotenv.config();
 
@@ -28,15 +31,20 @@ export class UserService {
   }
 
   async getUserByEmail(email) {
+    
+    return await this.userRepository.findByEmail(email);
+  }
+
+  async getUserByEmail(email) {
     return await this.userRepository.findByEmail(email);
   }
 
   async getUserById(id) {
-    return await this.userRepository.findById(id);
-  }
-
-  async verifyPassword(password, hashedPassword) {
-    return await bcrypt.compare(password, hashedPassword);
+      const user = await this.userRepository.findById(id);
+      if (!user) {
+          throw new NotFoundError("User not found");
+      }
+      return user;
   }
 
   async generateAuthToken(user) {
@@ -69,7 +77,7 @@ export class UserService {
     }
 
     if (Object.keys(dataToUpdate).length === 0) {
-      throw new Error("At least one field (email or password) is required to update");
+      throw new ValidationError("At least one field (email or password) is required to update");
     }
 
     return await this.userRepository.updateUser({ id, ...dataToUpdate });

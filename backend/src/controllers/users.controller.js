@@ -1,3 +1,6 @@
+import { NotFoundError, ValidationError } from "../utils/customErrors.js";
+import { sendErrorResponse } from "../middlewares/sendErrorResponse.js";
+
 export class UserController {
   constructor(userService) {
     this.userService = userService;
@@ -34,21 +37,22 @@ export class UserController {
 
   async getUserById(req, res) {
     try {
-      const userId = req.user.id;
+      const {id} = req.params;
+    
 
-      const user = await this.userService.getUserById(userId);
-
+      if (!id || id.lenght > 32 || id.type) {
+          throw new ValidationError( "ID is required")
+      }
+      const user = await this.userService.getUserById(id);
+      
       if (!user) {
-        return res.status(404).json({ message: "User not found" });
+         throw new NotFoundError("User not found ")
       }
 
       return res.status(200).json(user);
     } catch (error) {
-      console.error("Error get user:", error);
-
-      return res.status(500).json({
-        message: "Internal server error",
-      });
+        const statusCode = error.statusCode || 500;
+          return sendErrorResponse(res, statusCode,  error.message);
     }
   }
 

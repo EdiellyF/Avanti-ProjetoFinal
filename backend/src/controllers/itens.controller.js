@@ -9,15 +9,13 @@ export class ItemController {
     async createItens(req, res) {
         try {
             const itemData = this.#extractItemData(req);
-            
             const usuarioId = req.user.id;
-
             const novoItem = await this.itensService.createItem(itemData, usuarioId );
 
             return res.status(201).json(novoItem);
         } catch (error) {
-            console.error("Erro ao criar item:", error);
-            return sendErrorResponse(res, 500, "Erro interno do servidor");
+            const statusCode = error.statusCode || 500;
+            return  sendErrorResponse(res, statusCode,  error.message);
         }
     }
 
