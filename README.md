@@ -70,7 +70,7 @@ Agradecemos às seguintes pessoas que contribuíram para este projeto:
   </tr>
 </table> -->
 
-<a href="https://github.com/joaoev/feed-filme/graphs/contributors">
+<a href="https://github.com/Vitorloula/Avanti-ProjetoFinal/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=Vitorloula/Avanti-ProjetoFinal" alt="contrib.rocks image" />
 </a>
 
