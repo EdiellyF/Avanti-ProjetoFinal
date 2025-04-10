@@ -27,13 +27,11 @@ export class CategoryRepository {
 
   async deleteCategoryById(id) {
     const category = await this.getCategoryById(id);
-
     if(category){
         return await prismaClient.category.delete({
         where: { id }
       });
     }
-    
     return null;
   }
 
