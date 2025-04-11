@@ -39,12 +39,18 @@ export function authMiddleware(request, response, next) {
     }
     next();
   }
-  export function isUser(req, res, next) {
-    if (req.user.id !== req.params.id) {
-      return res.status(403).json({ message: "Você só pode atualizar seu próprio perfil" });
+
+
+  export  function isUser(req, res, next) {
+
+    const {id } = req.params; // id do usuario ou item
+    const userId = req.user.id;
+
+    if(req.OriginalUrl.includes("/users")){
+      if(!(userId == id || req.user?.role == "ADMIN")){
+        return res.status(403).json({ message: "Você só pode acessar ou atualizar seu próprio perfil" }); 
+      }
     }
     next();
   }
 
-
-//implementar depois um item owner, para tirar a validacao do service

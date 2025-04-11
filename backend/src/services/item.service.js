@@ -1,4 +1,4 @@
-import { ValidationError } from "../utils/customErrors.js";
+import { ForbiddenError, ValidationError } from "../utils/customErrors.js";
 
 
 export class ItemService{
@@ -7,7 +7,7 @@ export class ItemService{
         this.itemRepository = itemRepository;
     }
 
-    async createItem(itemData, usuarioId){
+    async createItem(itemData, usuarioId) {
         if (!this.#validateRequiredFields(itemData)) {
             throw new ValidationError('Missing required fields');
         }
@@ -21,11 +21,12 @@ export class ItemService{
             ...itemData,
             usuarioId
         };
- 
-        try{
-           return await this.itemRepository.createItem(data); 
-        } catch(error){
-            throw new Error("Erro ao criar item")
+
+        try {
+            return await this.itemRepository.createItem(data);
+        } catch (error) {
+            console.error("Erro ao criar item:", error);
+            throw new Error("Erro ao criar item no banco de dados");
         }
     }
 
@@ -42,7 +43,7 @@ export class ItemService{
         }
     
         if (item.usuarioId !== userId) {
-            throw new ValidationError("Você só pode deletar itens relacionados a você");
+            throw new ForbiddenError("Você só pode deletar itens relacionados a você");
         }
     
         try {
@@ -51,6 +52,12 @@ export class ItemService{
             console.error("Error deleting item:", error);
             throw new Error("Erro ao deletar item");
         }
+    }
+
+
+    async getAllItens(){
+            const lista = await this.itemRepository.findAllItens();
+            return lista;
     }
 
 

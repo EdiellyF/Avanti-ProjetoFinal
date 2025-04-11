@@ -44,7 +44,7 @@ model Category {
 
    itens     Item[]
 
-  @@map("categories") 
+  @@map("category") 
 }
 
 enum Status {
@@ -68,7 +68,7 @@ model Item {
   categoria   Category @relation(fields: [categoriaId], references: [id])
 
   usuarioId   String @db.Uuid
-  usuario     User     @relation(fields: [usuarioId], references: [id])
+  user     User     @relation(fields: [usuarioId], references: [id])
 
   createdAt   DateTime  @default(now()) @db.Timestamp(6)
   updatedAt   DateTime  @updatedAt @db.Timestamp(6)

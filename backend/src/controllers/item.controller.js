@@ -38,6 +38,16 @@ export class ItemController {
         }
     }
 
+    async getAllItens(req, res) {
+        try {
+            const itens = await this.itemService.getAllItens();
+            return res.status(200).json(itens);
+        } catch (error) {
+            console.error("Error fetching items:", error);
+            return res.status(500).json({ message: "Erro ao buscar itens" });
+        }
+    }
+
     
     #extractItemData(req) {
         const {

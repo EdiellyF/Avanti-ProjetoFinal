@@ -11,7 +11,7 @@ const itemService = new ItemService(itemRepository)
 const itemController = new ItemController(itemService);
 
 router.post("/", authMiddleware, (req, res) => itemController.createItem(req,res));
-router.get("/", (req, res) => itemController.getItens(req, res))
+router.get("/", (req, res) => itemController.getAllItens(req, res))
 router.delete("/:id", authMiddleware,  (req, res) => {
     itemController.deleteItemById(req, res);
 });
