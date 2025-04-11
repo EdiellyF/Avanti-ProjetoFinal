@@ -16,4 +16,8 @@ router.delete("/:id", authMiddleware,  (req, res) => {
     itemController.deleteItemById(req, res);
 });
 
+router.put("/:id", authMiddleware, (req,res) => {
+    itemController.updateItemById(req,res)
+})
+
 export default router;

@@ -25,7 +25,7 @@ export class ItemController {
             const { id: itemId } = req.params; 
             const userId = req.user.id; 
 
-            const isDeleteItem = await this.itemService.deleteItemById({ id: itemId, userId });
+            const isDeleteItem = await this.itemService.deleteItemById({ id: itemId, userId, req });
 
             if (isDeleteItem) {
                 return res.status(204).end();
@@ -48,6 +48,29 @@ export class ItemController {
         }
     }
 
+
+    async updateItemById(req, res) {
+        try {
+            const { id: itemId } = req.params;
+            const userId = req.user.id;
+            const updateData = req.body;
+
+            const updatedItem = await this.itemService.updateItemById({
+              id:  itemId,
+                userId,
+                updateData,
+                role: req.user.role
+            });
+
+            return res.status(200).json({ message: "Item atualizado com sucesso", item: updatedItem });
+        } catch (error) {
+            const statusCode = error.statusCode || 500;
+            return sendErrorResponse(res, statusCode, error.message);
+        }
+    }
+
+
+
     
     #extractItemData(req) {
         const {
@@ -60,6 +83,10 @@ export class ItemController {
             status,
             categoriaId
         } = req.body;
+
+        if (!nome || !descricao || !data || !localizacao || !contato || !status || !categoriaId) {
+            throw new ValidationError("Campos obrigatórios estão faltando");
+        }
 
         return {
             nome,
