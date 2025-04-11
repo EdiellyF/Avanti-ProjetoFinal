@@ -43,7 +43,7 @@ export function authMiddleware(request, response, next) {
 
   export  function isUser(req, res, next) {
 
-    const {id } = req.params; // id do usuario ou item
+    const {id } = req.params; 
     const userId = req.user.id;
 
     if(req.OriginalUrl.includes("/users")){

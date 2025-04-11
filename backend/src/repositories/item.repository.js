@@ -49,4 +49,18 @@ export class ItemRepository {
     });
   }
 
+  async updateItemById(id, updateData) {
+    try {
+        return await prismaClient.item.update({
+            where: { id },
+            data: updateData,
+        });
+    } catch (error) {
+        console.error("Erro ao atualizar item no repositório:", error);
+        throw new Error("Erro ao atualizar item no banco de dados");
+    }
+}
+
+
+
 }
