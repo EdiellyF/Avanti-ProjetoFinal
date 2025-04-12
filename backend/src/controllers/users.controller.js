@@ -38,11 +38,6 @@ export class UserController {
   async getUserById(req, res) {
     try {
       const { id } = req.params;
-      const { id: userId, role } = req.user;
-
-      if (id !== userId && role !== "ADMIN") {
-        return res.status(403).json({ message: "Access denied" });
-      }
 
       const user = await this.userService.getUserById(id);
 
