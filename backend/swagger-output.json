@@ -1,0 +1,287 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Findy - Conectando quem perdeu com quem encontrou",
+    "version": "1.0.0",
+    "description": "API para gerenciamento de usuários, itens perdidos/encontrados e categorias."
+  },
+  "host": "localhost:3333",
+  "basePath": "/v1/api",
+  "schemes": ["http"],
+  "tags": [
+    { "name": "Usuários", "description": "Operações relacionadas a usuários" },
+    { "name": "Itens", "description": "Operações relacionadas a itens perdidos ou encontrados" },
+    { "name": "Categorias", "description": "Operações relacionadas a categorias de itens" }
+  ],
+  "paths": {
+    "/user/register": {
+      "post": {
+        "tags": ["Usuários"],
+        "summary": "Cria um novo usuário",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": { "$ref": "#/definitions/User" }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Usuário criado com sucesso."
+          },
+          "400": {
+            "description": "Requisição inválida."
+          }
+        }
+      }
+    },
+    "/user/login": {
+      "post": {
+        "tags": ["Usuários"],
+        "summary": "Autentica um usuário",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": { "$ref": "#/definitions/Login" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Login realizado com sucesso."
+          },
+          "401": {
+            "description": "Credenciais inválidas."
+          }
+        }
+      }
+    },
+    "/user/me": {
+      "get": {
+        "tags": ["Usuários"],
+        "summary": "Retorna informações do usuário autenticado",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "required": true,
+            "description": "Token JWT"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Informações do usuário retornadas com sucesso."
+          },
+          "401": {
+            "description": "Token inválido ou ausente."
+          }
+        }
+      }
+    },
+    "/item": {
+      "post": {
+        "tags": ["Itens"],
+        "summary": "Cria um novo item",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "required": true,
+            "description": "Token JWT"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": { "$ref": "#/definitions/Item" }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Item criado com sucesso."
+          },
+          "400": {
+            "description": "Requisição inválida."
+          },
+          "401": {
+            "description": "Token inválido ou ausente."
+          }
+        }
+      },
+      "get": {
+        "tags": ["Itens"],
+        "summary": "Lista todos os itens",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "type": "string",
+            "enum": ["PERDIDO", "ENCONTRADO"],
+            "description": "Filtrar itens por status"
+          },
+          {
+            "name": "categoriaId",
+            "in": "query",
+            "type": "string",
+            "description": "Filtrar itens por categoria"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de itens retornada com sucesso.",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/Item" }
+            }
+          }
+        }
+      }
+    },
+    "/item/{id}": {
+      "get": {
+        "tags": ["Itens"],
+        "summary": "Retorna detalhes de um item",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Item encontrado."
+          },
+          "404": {
+            "description": "Item não encontrado."
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Itens"],
+        "summary": "Deleta um item",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Item deletado com sucesso."
+          },
+          "401": {
+            "description": "Token inválido ou ausente."
+          },
+          "404": {
+            "description": "Item não encontrado."
+          }
+        }
+      }
+    },
+    "/categories": {
+      "post": {
+        "tags": ["Categorias"],
+        "summary": "Cria uma nova categoria",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": { "$ref": "#/definitions/Category" }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Categoria criada com sucesso."
+          },
+          "400": {
+            "description": "Requisição inválida."
+          }
+        }
+      },
+      "get": {
+        "tags": ["Categorias"],
+        "summary": "Lista todas as categorias",
+        "responses": {
+          "200": {
+            "description": "Lista de categorias retornada com sucesso.",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/Category" }
+            }
+          }
+        }
+      }
+    },
+    "/categories/{id}": {
+      "get": {
+        "tags": ["Categorias"],
+        "summary": "Retorna uma categoria específica",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Categoria encontrada."
+          },
+          "404": {
+            "description": "Categoria não encontrada."
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "required": ["name", "email", "phone", "password"],
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "password": { "type": "string" }
+      }
+    },
+    "Login": {
+      "type": "object",
+      "required": ["email", "password"],
+      "properties": {
+        "email": { "type": "string" },
+        "password": { "type": "string" }
+      }
+    },
+    "Item": {
+      "type": "object",
+      "required": ["nome", "descricao", "categoriaId", "status", "data"],
+      "properties": {
+        "nome": { "type": "string" },
+        "descricao": { "type": "string" },
+        "categoriaId": { "type": "string" },
+        "status": { "type": "string", "enum": ["PERDIDO", "ENCONTRADO"] },
+        "data": { "type": "string", "format": "date-time" }
+      }
+    },
+    "Category": {
+      "type": "object",
+      "required": ["nome"],
+      "properties": {
+        "nome": { "type": "string" }
+      }
+    }
+  }
+}

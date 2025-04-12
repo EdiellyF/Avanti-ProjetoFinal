@@ -4,12 +4,12 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon  backend/src/index.js",
-    "swagger": "node swagger.js"
+    "start": "node ./src/index.js",
+    "dev": "nodemon ./src/index.js",
+    "swagger": "node ./swagger.js"
   },
   "prisma": {
-    "schema": "./backend/prisma/schema.prisma"
+    "schema": "./prisma/schema.prisma"
   },
   "keywords": [],
   "author": "",

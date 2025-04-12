@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import { green, cyan, yellow, bold, underline } from "colorette";
 
 import swaggerUi from "swagger-ui-express";
-import swaggerFile from "../../swagger-output.json" assert { type: "json" };
+import swaggerFile from "../swagger-output.json" assert { type: "json" };
 
 import routes from "./routes/routes.js";
 import { notFoundMiddleware } from "./middlewares/notFound.js";

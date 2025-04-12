@@ -1,4 +1,4 @@
-# 🔍 [Nome do projeto]
+# 🔍 Findy - Conectando quem perdeu com quem encontrou
 
 ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
@@ -10,7 +10,7 @@
 
 ## 📋 Descrição do Projeto
 
-O **[Nome do projeto]** é uma aplicação web desenvolvida com o objetivo de ajudar pessoas a registrarem objetos perdidos ou encontrados em espaços públicos como escolas, praças ou centros comunitários. A proposta é criar uma ponte entre quem perdeu e quem encontrou objetos, sem necessidade de login.
+Findy é uma aplicação web comunitária desenvolvida para facilitar a recuperação de objetos perdidos em espaços públicos como escolas, parques, faculdades, entre outros.Com uma interface simples e intuitiva, qualquer pessoa pode cadastrar ou buscar itens perdidos e encontrados. Por meio de filtros por categoria, localização e status, além de uma barra de pesquisa por palavras-chave, o sistema torna mais fácil reconectar objetos aos seus verdadeiros donos.O projeto tem como objetivo incentivar a solidariedade e a organização em ambientes coletivos, utilizando a tecnologia como aliada.
 
 ---
 
