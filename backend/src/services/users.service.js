@@ -37,8 +37,11 @@ export class UserService {
   }
 
   async getUserById(id) {
+    console.log("Buscando usuário com ID:", id);
     const user = await this.userRepository.findById(id);
+
     if (!user) {
+      console.log("Usuário não encontrado para o ID:", id);
       throw new NotFoundError("User not found");
     }
     return user;
@@ -84,5 +87,13 @@ export class UserService {
 
   async verifyPassword(password, hashedPassword) {
     return await bcrypt.compare(password, hashedPassword);
+  }
+
+  async deleteUser(id) {
+    if (!id) {
+      throw new Error("ID is required to delete a user");
+    }
+
+    return await this.userRepository.deleteUser(id);
   }
 }

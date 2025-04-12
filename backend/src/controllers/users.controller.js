@@ -1,5 +1,6 @@
 import { NotFoundError, ValidationError } from "../utils/customErrors.js";
 import { sendErrorResponse } from "../middlewares/sendErrorResponse.js";
+import { isValidUUID } from "../utils/isValidUUID.js";
 
 export class UserController {
   constructor(userService) {
@@ -112,6 +113,37 @@ export class UserController {
     } catch (error) {
       console.error("Error updating user:", error);
       return res.status(500).json({ message: "Internal server error" });
+    }
+  }
+
+  async delete(req, res) {
+    try {
+      const { id } = req.params;
+
+      if (!isValidUUID(id)) {
+        return res.status(400).json({
+          message: "ID não está no formato UUID",
+        });
+      }
+
+      if (!id) {
+        return res.status(400).json({ message: "ID is required" });
+      }
+
+      const user = await this.userService.getUserById(id);
+
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      console.log("Deleting user with ID:", id);
+      await this.userService.deleteUser(id);
+
+      return res.status(204).send();
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      const statusCode = error.statusCode || 500;
+      return sendErrorResponse(res, statusCode, error.message);
     }
   }
 }

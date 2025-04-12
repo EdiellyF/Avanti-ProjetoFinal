@@ -14,14 +14,12 @@ export class UserRepository {
   async findById(id) {
     return await prismaClient.user.findUnique({
       where: { id },
-      select:{
-        email:true,
-        name:true
-      }
+      select: {
+        email: true,
+        name: true,
+      },
     });
   }
-
-
 
   async updateUser({ id, ...data }) {
     return await prismaClient.user.update({
@@ -30,4 +28,9 @@ export class UserRepository {
     });
   }
 
+  async deleteUser(id) {
+    return await prismaClient.user.delete({
+      where: { id },
+    });
+  }
 }
