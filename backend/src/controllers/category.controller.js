@@ -63,6 +63,13 @@ export class CategoryController {
   async deleteCategory(req, res) {
     try {
       const id = req.params.id;
+
+      if (!isValidUUID(id)) {
+        return res.status(400).json({
+          message: "ID não está no formato UUID",
+        });
+      }
+
       const category = await this.categoryService.deleteCategoryById(id);
 
       if (!category) {
@@ -75,6 +82,36 @@ export class CategoryController {
       return res.status(500).json({
         message: "Internal server error",
       });
+    }
+  }
+
+  async updateCategory(req, res) {
+    try {
+      const id = req.params.id;
+      const { name } = req.body;
+
+      if (!isValidUUID(id)) {
+        return res.status(400).json({
+          message: "ID não está no formato UUID",
+        });
+      }
+
+      if (!name) {
+        return res.status(400).json({ message: "All fields are required" });
+      }
+
+      const updatedCategory = await this.categoryService.updateCategory(
+        id,
+        name
+      );
+
+      return res.status(200).json(updatedCategory);
+    } catch (error) {
+      console.error("Error updating category:", error);
+
+      const statusCode = error.statusCode || 500;
+
+      return sendErrorResponse(res, statusCode, error.message);
     }
   }
 }

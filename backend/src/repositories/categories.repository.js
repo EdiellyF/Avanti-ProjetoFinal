@@ -27,14 +27,18 @@ export class CategoryRepository {
 
   async deleteCategoryById(id) {
     const category = await this.getCategoryById(id);
-    if(category){
-        return await prismaClient.category.delete({
-        where: { id }
+    if (category) {
+      return await prismaClient.category.delete({
+        where: { id },
       });
     }
     return null;
   }
 
-
-
+  updateCategoryById(id, name) {
+    return prismaClient.category.update({
+      where: { id },
+      data: { name },
+    });
+  }
 }
