@@ -12,3 +12,66 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum Role {
+  ADMIN 
+  USER
+}
+
+model User {
+  id       String @id @default(uuid()) @db.Uuid
+  name     String
+  email    String @unique
+  phone    String
+  password String
+
+  itens Item[]
+  role Role @default(USER)
+
+
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  updatedAt DateTime @updatedAt @db.Timestamp(6)
+
+  @@map("users")
+}
+
+model Category {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @unique
+
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  updatedAt DateTime @updatedAt @db.Timestamp(6)
+
+   itens     Item[]
+
+  @@map("category") 
+}
+
+enum Status {
+  PERDIDO     @map("perdido")
+  ENCONTRADO  @map("encontrado")
+}
+
+
+model Item {
+  id          String      @id @default(uuid()) @db.Uuid
+  nome        String
+  descricao   String
+  data        DateTime
+  localizacao String
+  contato     String
+  foto        String?
+  status      Status
+
+
+  categoriaId String @db.Uuid
+  categoria   Category @relation(fields: [categoriaId], references: [id])
+
+  usuarioId   String @db.Uuid
+  user     User     @relation(fields: [usuarioId], references: [id])
+
+  createdAt   DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt   DateTime  @updatedAt @db.Timestamp(6)
+
+  @@map("itens")
+}
