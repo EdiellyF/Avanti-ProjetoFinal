@@ -37,11 +37,9 @@ export class UserService {
   }
 
   async getUserById(id) {
-    console.log("Buscando usuário com ID:", id);
     const user = await this.userRepository.findById(id);
 
     if (!user) {
-      console.log("Usuário não encontrado para o ID:", id);
       throw new NotFoundError("User not found");
     }
     return user;

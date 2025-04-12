@@ -136,7 +136,6 @@ export class UserController {
         return res.status(404).json({ message: "User not found" });
       }
 
-      console.log("Deleting user with ID:", id);
       await this.userService.deleteUser(id);
 
       return res.status(204).send();
