@@ -22,8 +22,10 @@ export class ItemRepository {
     });
   }
 
-  async findAllItens() {
+  async findAllItens({ skip = 0, take = 10 }) {
     return await prismaClient.item.findMany({
+      skip,
+      take,
       select: {
         id: true,
         nome: true,
@@ -66,5 +68,9 @@ export class ItemRepository {
     return await prismaClient.item.findUnique({
       where: { id },
     });
+  }
+
+  async countItens() {
+    return await prismaClient.item.count();
   }
 }

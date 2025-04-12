@@ -43,7 +43,24 @@ export class ItemController {
 
   async getAllItens(req, res) {
     try {
-      const itens = await this.itemService.getAllItens();
+      const { page: pageQuery = 1, limit: limitQuery = 10 } = req.query;
+
+      const page = parseInt(pageQuery, 10);
+      const limit = parseInt(limitQuery, 10);
+
+      if (isNaN(page) || isNaN(limit) || page <= 0 || limit <= 0) {
+        return res
+          .status(400)
+          .json({ message: "Page and limit must be positive numbers" });
+      }
+
+      console.log(`Fetching items - Page: ${page}, Limit: ${limit}`);
+
+      const paginationOptions = { page, limit };
+
+      console.log("Controller - Pagination Options:", paginationOptions);
+      const itens = await this.itemService.getAllItens(paginationOptions);
+
       return res.status(200).json(itens);
     } catch (error) {
       console.error("Error fetching items:", error);

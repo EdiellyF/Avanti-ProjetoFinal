@@ -59,9 +59,51 @@ export class ItemService {
     }
   }
 
-  async getAllItens() {
-    const lista = await this.itemRepository.findAllItens();
-    return lista;
+  async getAllItens({ page = 1, limit = 10 }) {
+    console.log("SERVICE - Page:", page, "Limit:", limit);
+
+    const offset = (page - 1) * limit;
+
+    const itens = await this.itemRepository.findAllItens({
+      skip: offset,
+      take: limit,
+    });
+
+    if (!itens) {
+      return null;
+    }
+
+    const totalCount = await this.itemRepository.countItens();
+
+    if (totalCount === 0) {
+      return {
+        itens: [],
+        totalCount: 0,
+        totalPages: 0,
+        hasNextPage: false,
+        hasPreviousPage: false,
+        nextPage: null,
+        previousPage: null,
+      };
+    }
+
+    const totalPages = Math.ceil(totalCount / limit);
+    const hasNextPage = page < totalPages;
+    const hasPreviousPage = page > 1;
+    const nextPage = hasNextPage ? page + 1 : null;
+    const previousPage = hasPreviousPage ? page - 1 : null;
+
+    const response = {
+      itens,
+      totalCount,
+      totalPages,
+      hasNextPage,
+      hasPreviousPage,
+      nextPage,
+      previousPage,
+    };
+
+    return response;
   }
 
   async updateItemById({ id, userId, role, updateData }) {
