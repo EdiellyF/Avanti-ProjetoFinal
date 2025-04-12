@@ -37,22 +37,23 @@ export class UserController {
 
   async getUserById(req, res) {
     try {
-      const {id} = req.params;
-    
+      const { id } = req.params;
+      const { id: userId, role } = req.user;
 
-      if (!id || id.lenght > 32 || id.type) {
-          throw new ValidationError( "ID is required")
+      if (id !== userId && role !== "ADMIN") {
+        return res.status(403).json({ message: "Access denied" });
       }
+
       const user = await this.userService.getUserById(id);
-      
+
       if (!user) {
-         throw new NotFoundError("User not found ")
+        throw new NotFoundError("User not found ");
       }
 
       return res.status(200).json(user);
     } catch (error) {
-        const statusCode = error.statusCode || 500;
-          return sendErrorResponse(res, statusCode,  error.message);
+      const statusCode = error.statusCode || 500;
+      return sendErrorResponse(res, statusCode, error.message);
     }
   }
 
@@ -89,29 +90,33 @@ export class UserController {
     }
   }
 
-
   async update(req, res) {
-    try{
-          const id = req.params.id;
-          const { email, password} = req.body;
-          
-          if (!id || (!email && !password )) {
-            return res.status(400).json({ message: "ID and at least one field are required" });
-          }
+    try {
+      const id = req.params.id;
+      const { email, password } = req.body;
 
+      if (!id || (!email && !password)) {
+        return res
+          .status(400)
+          .json({ message: "ID and at least one field are required" });
+      }
 
-          const existingUser = await this.userService.getUserByEmail(email);
+      const existingUser = await this.userService.getUserByEmail(email);
 
-          if (existingUser) {
-            return res.status(400).json({ message: "Email already exists" });
-          }
-          
-          const updatedUser = await this.userService.updateUser({ id, email, password });
+      if (existingUser) {
+        return res.status(400).json({ message: "Email already exists" });
+      }
 
-            return res.status(200).json(updatedUser);
-    }catch(error){
+      const updatedUser = await this.userService.updateUser({
+        id,
+        email,
+        password,
+      });
+
+      return res.status(200).json(updatedUser);
+    } catch (error) {
       console.error("Error updating user:", error);
-      return res.status(500).json({ message: "Internal server error" }); 
+      return res.status(500).json({ message: "Internal server error" });
     }
   }
 }

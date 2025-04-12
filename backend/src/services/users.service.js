@@ -3,8 +3,6 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { ValidationError, NotFoundError } from "../utils/customErrors.js";
 
-
-
 dotenv.config();
 
 export class UserService {
@@ -31,7 +29,6 @@ export class UserService {
   }
 
   async getUserByEmail(email) {
-    
     return await this.userRepository.findByEmail(email);
   }
 
@@ -40,11 +37,11 @@ export class UserService {
   }
 
   async getUserById(id) {
-      const user = await this.userRepository.findById(id);
-      if (!user) {
-          throw new NotFoundError("User not found");
-      }
-      return user;
+    const user = await this.userRepository.findById(id);
+    if (!user) {
+      throw new NotFoundError("User not found");
+    }
+    return user;
   }
 
   async generateAuthToken(user) {
@@ -77,9 +74,15 @@ export class UserService {
     }
 
     if (Object.keys(dataToUpdate).length === 0) {
-      throw new ValidationError("At least one field (email or password) is required to update");
+      throw new ValidationError(
+        "At least one field (email or password) is required to update"
+      );
     }
 
     return await this.userRepository.updateUser({ id, ...dataToUpdate });
+  }
+
+  async verifyPassword(password, hashedPassword) {
+    return await bcrypt.compare(password, hashedPassword);
   }
 }
