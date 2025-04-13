@@ -26,7 +26,7 @@ app.listen(PORT, () => {
   console.log(
     green(
       `🚀 ${bold("[Server]")} Servidor executando em: ${underline(
-        cyan(`http://localhost:${PORT}`)
+        cyan(`http://localhost:${PORT}/api/v1`)
       )}`
     )
   );
