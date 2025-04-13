@@ -118,13 +118,20 @@ Instalando o __backend__
 > [!IMPORTANT]
 > Caso use o banco de dados remoto e não o docker, as credenciais para conexão serão enviadas por email na primeira entrega.
 
-4. Iniciando o Prisma client:
+1. Iniciando o Prisma ORM e executando as migrations:
 
     ```bash
     npx prisma generate
+    npx prisma migrate dev
     ```
 
-5. Pronto agora você pode executar a api, utilize o comando:
+    Obs: Se quiser só criar as tabelas no banco sem rodar uma nova migração use:
+
+    ```bash
+    npx prisma db push
+    ```
+
+2. Pronto agora você pode executar a api, utilize o comando:
 
    ```bash
    npm run dev 
