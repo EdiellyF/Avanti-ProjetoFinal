@@ -114,7 +114,7 @@ Instalando o __backend__
 
     Isso inicia o container do PostgreSQL.
 
-    > [!IMPORTANT]
+    > [!NOTE]
     > Caso use o banco de dados remoto e não o docker, as credenciais para conexão serão enviadas por email na primeira entrega.
 
 4. Iniciando o Prisma client:
