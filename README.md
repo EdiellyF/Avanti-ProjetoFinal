@@ -211,3 +211,4 @@ Agradecemos às seguintes pessoas que contribuíram para este projeto:
 <p align="center">
   Projeto desenvolvido durante o bootcamp Desenvolvimento Full Stack - Atlântico Avanti - Feito com 💜 por Squad 6  
 </p>
+
