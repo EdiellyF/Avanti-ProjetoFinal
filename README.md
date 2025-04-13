@@ -81,9 +81,10 @@ git clone https://github.com/Vitorloula/Avanti-ProjetoFinal.git
 
 Instalando o __backend__
 
-1. Navegue até a pasta backend e instale as dependências:
+1. Navegue até a pasta do projeto Avanti-ProjetoFinal vá em backend e instale as dependências:
 
     ```bash
+    cd Avanti-ProjetoFinal
     cd backend
     npm install
     ```
