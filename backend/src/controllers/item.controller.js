@@ -54,11 +54,8 @@ export class ItemController {
           .json({ message: "Page and limit must be positive numbers" });
       }
 
-      console.log(`Fetching items - Page: ${page}, Limit: ${limit}`);
-
       const paginationOptions = { page, limit };
 
-      console.log("Controller - Pagination Options:", paginationOptions);
       const itens = await this.itemService.getAllItens(paginationOptions);
 
       return res.status(200).json(itens);

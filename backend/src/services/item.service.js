@@ -60,8 +60,6 @@ export class ItemService {
   }
 
   async getAllItens({ page = 1, limit = 10 }) {
-    console.log("SERVICE - Page:", page, "Limit:", limit);
-
     const offset = (page - 1) * limit;
 
     const itens = await this.itemRepository.findAllItens({
