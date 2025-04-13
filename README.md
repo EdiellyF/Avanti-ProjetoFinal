@@ -131,9 +131,9 @@ Instalando o __backend__
 
    Caso tudo esteja configurado corretamente, o terminal deverá apresentar uma saída semelhante à imagem abaixo:
 
-<center>
-<img alt="Imagem do terminal executando a API" src=".github/assets/terminal-example.svg" width="50%"/>
-</center>
+  <center>
+  <img alt="Imagem do terminal executando a API" src=".github/assets/terminal-example.svg" width="50%"/>
+  </center>
 
 ## 📚 Documentação com o Swagger
 
