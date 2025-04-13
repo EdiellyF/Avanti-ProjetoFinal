@@ -171,7 +171,7 @@ Agradecemos às seguintes pessoas que contribuíram para este projeto:
       </a>
     </td>
     <td align="center">
-      <a href="#" title="João Evangelista (joaoev)">
+      <a href="https://github.com/joaoev" title="João Evangelista (joaoev)">
         <img src="https://avatars.githubusercontent.com/u/101232352?v=4" width="100px;" /><br>
         <sub>
           <b>João Evangelista</b>
