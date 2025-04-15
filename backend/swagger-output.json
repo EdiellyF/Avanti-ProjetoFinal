@@ -1,0 +1,526 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Findy - Conectando quem perdeu com quem encontrou",
+    "version": "1.0.0",
+    "description": "API para gerenciamento de usuários, itens perdidos/encontrados e categorias."
+  },
+  "host": "localhost:3333",
+  "basePath": "/v1/api",
+  "schemes": ["http"],
+  "tags": [
+    { "name": "Usuários", "description": "Operações relacionadas a usuários" },
+    { "name": "Itens", "description": "Operações relacionadas a itens perdidos ou encontrados" },
+    { "name": "Categorias", "description": "Operações relacionadas a categorias de itens" }
+  ],
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": ["Usuários"],
+        "summary": "Cria um novo usuário",
+        "description": "Endpoint para criar um novo usuário no sistema.",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": { "$ref": "#/definitions/User" }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Usuário criado com sucesso."
+          },
+          "400": {
+            "description": "Erro de validação. Campos obrigatórios ausentes ou inválidos."
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": ["Usuários"],
+        "summary": "Login de usuário",
+        "description": "Endpoint para autenticar um usuário e gerar um token JWT.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": { "$ref": "#/definitions/Login" }
+          }
+        ],
+        "responses": {
+          "200": {
+             "description": "Login bem-sucedido. Retorna o token JWT."
+          },
+          "401": {
+            "description": "Credenciais inválidas."
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": ["Usuários"],
+        "summary": "Obter detalhes do usuário autenticado",
+        "description": "Endpoint para obter informações do usuário autenticado.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do usuário.",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "Token JWT para autenticação."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Informações do usuário retornadas com sucesso."
+          },
+          "401": {
+            "description": "Token inválido ou ausente."
+          }
+        }
+      },
+      "put": {
+        "tags": ["Usuários"],
+        "summary": "Atualizar um usuário",
+        "description": "Endpoint para atualizar os dados de um usuário pelo ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do usuário.",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "Token JWT para autenticação."
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": { "type": "string", "example": "novoemail@example.com" },
+                "password": { "type": "string", "example": "novasenha123" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Informações do usuário retornadas com sucesso."
+          },
+          "401": {
+            "description": "Token inválido ou ausente."
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Usuários"],
+        "summary": "Deletar um usuário",
+        "description": "Endpoint para deletar usuário somente users com a role ADMIN podem usar.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do usuário.",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "Token JWT para autenticação."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No content."
+          },
+          "401": {
+            "description": "Token inválido ou ausente."
+          }
+        }
+      }
+    },
+    
+    "/categories": {
+      "post": {
+        "tags": ["Categorias"],
+        "summary": "Cria uma nova categoria",
+        "description": "Endpoint para criar uma nova categoria somente users com a role ADMIN podem usar.",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": { "$ref": "#/definitions/Category" }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "Token JWT para autenticação."
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Categoria criada com sucesso."
+          },
+          "400": {
+            "description": "Requisição inválida."
+          },
+          "401": {
+            "description": "Token inválido ou ausente."
+          },
+          "403": {
+            "description": "Acesso negado. Somente usuários com a role ADMIN podem criar categorias."
+          }
+        }
+      },
+      "get": {
+        "tags": ["Categorias"],
+        "summary": "Lista todas as categorias",
+        "responses": {
+          "200": {
+            "description": "Lista de categorias retornada com sucesso.",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/Category" }
+            }
+          }
+        }
+      }
+    },
+    "/categories/{id}": {
+      "get": {
+        "tags": ["Categorias"],
+        "summary": "Retorna uma categoria específica",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Categoria encontrada."
+          },
+          "404": {
+            "description": "Categoria não encontrada."
+          }
+        }
+      },
+      "put": {
+        "tags": ["Categorias"],
+        "summary": "Atualiza uma categoria",
+        "description": "Endpoint para atualizar os dados de uma categoria pelo ID somente users com a role ADMIN podem usar.",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID da categoria a ser atualizada.",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "Token JWT para autenticação."
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Categoria atualizada com sucesso."
+          },
+          "401": {
+            "description": "Token inválido ou ausente."
+          },
+          "403": {
+            "description": "Acesso negado. Somente usuários com a role ADMIN podem atualizar categorias."
+          },
+          "404": {
+            "description": "Categoria não encontrada."
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Categorias"],
+        "summary": "Deletar uma categoria",
+        "description": "Endpoint para deletar uma categoria pelo ID somente users com a role ADMIN podem usar.",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID da categoria a ser excluída.",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "Token JWT para autenticação."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No content."
+          },
+          "401": {
+            "description": "Token inválido ou ausente."
+          },
+          "403": {
+            "description": "Acesso negado. Somente usuários com a role ADMIN podem deletar categorias."
+          },
+          "404": {
+            "description": "Categoria não encontrada."
+          }
+        }
+      }
+      
+    },
+
+    "/item": {
+      "post": {
+        "tags": ["Itens"],
+        "summary": "Cria um novo item",
+        "description": "Endpoint para criar um novo item no sistema. O item pode ser marcado como perdido ou encontrado e deve estar associado a uma categoria e a um usuário.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "required": true,
+            "description": "Token JWT"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": { "$ref": "#/definitions/Item" }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Item criado com sucesso.",
+            "schema": { "$ref": "#/definitions/Item" }
+          },
+          "400": {
+            "description": "Requisição inválida."
+          },
+          "401": {
+            "description": "Token inválido ou ausente."
+          }
+        }
+      },
+      "get": {
+        "tags": ["Itens"],
+        "summary": "Lista todos os itens",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "type": "number",
+            "description": "Página de resultados (padrão: 1)"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "number",
+            "description": "Número máximo de itens por página (padrão: 10)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de itens retornada com sucesso."
+          }
+        }
+      }
+    },
+    "/item/{id}": {
+      "get": {
+        "tags": ["Itens"],
+        "summary": "Retorna detalhes de um item",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Item encontrado."
+          },
+          "404": {
+            "description": "Item não encontrado."
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Itens"],
+        "summary": "Excluir um item",
+        "description": "Endpoint para excluir um item pelo ID.",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do item a ser excluído.",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "Token JWT para autenticação."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Item deletado com sucesso."
+          },
+          "401": {
+            "description": "Token inválido ou ausente."
+          },
+          "404": {
+            "description": "Item não encontrado."
+          }
+        }
+      },
+      "put": {
+        "tags": ["Itens"],
+        "summary": "Atualiza um item",
+        "description": "Endpoint para atualizar os dados de um item pelo ID.",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID do item a ser atualizado.",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "Token JWT para autenticação."
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string", "example": "Celular atualizado" },
+                "description": { "type": "string", "example": "Descrição atualizada do celular." }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Item atualizado com sucesso."
+          },
+          "401": {
+            "description": "Token inválido ou ausente."
+          },
+          "404": {
+            "description": "Item não encontrado."
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "required": ["name", "email", "phone", "password"],
+      "properties": {
+        "name": { "type": "string", "example": "João Silva" },
+        "email": { "type": "string", "example": "joao@example.com" },
+        "phone": { "type": "string", "example": "123456789" },
+        "password": { "type": "string", "example": "senha123" }
+      }
+    },
+    "Login": {
+      "type": "object",
+      "required": ["email", "password"],
+      "properties": {
+        "email": { "type": "string", "example": "joao@example.com" },
+        "password": { "type": "string", "example": "senha123" }
+      }
+    },
+    "Item": {
+      "type": "object",
+      "required": ["nome", "descricao", "data", "localizacao", "contato", "status", "categoriaId", "usuarioId"],
+      "properties": {
+        "id": { "type": "string", "example": "123e4567-e89b-12d3-a456-426614174002", "description": "ID do item criado." },
+        "nome": { "type": "string", "example": "Notebook Dell" },
+        "descricao": { "type": "string", "example": "Notebook Dell Inspiron 15, 16GB RAM, 512GB SSD" },
+        "data": { "type": "string", "example": "2025-04-10T10:00:00.000Z" },
+        "localizacao": { "type": "string", "example": "São Paulo, SP" },
+        "contato": { "type": "string", "example": "contato@example.com" },
+        "foto": { "type": "string", "example": "https://example.com/foto.jpg" },
+        "status": { "type": "string", "example": "PERDIDO" },
+        "categoriaId": { "type": "string", "example": "123e4567-e89b-12d3-a456-426614174000" },
+        "usuarioId": { "type": "string", "example": "123e4567-e89b-12d3-a456-426614174001" }
+      }
+    },
+
+    "Category": {
+      "type": "object",
+      "required": ["nome"],
+      "properties": {
+        "nome": { "type": "string" }
+      }
+    }
+  }
+}
