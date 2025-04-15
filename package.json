@@ -16,7 +16,11 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/material": "^7.0.2",
     "@prisma/client": "^6.5.0",
+    "axios": "^1.8.4",
     "backend": "file:",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
