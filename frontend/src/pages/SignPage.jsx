@@ -36,15 +36,15 @@ export function SignPage(){
 
     return (
         <>
-        <AppBar position="fixed" sx={{ backgroundColor: "#1c1c1c" }}>
+        <AppBar position="fixed" sx={{ backgroundColor: "#1c1c1c", }}>
             <Toolbar disableGutters>
             <ToolBarFindy />
             </Toolbar>
         </AppBar>
 
-        <Container className="sign-page" maxWidth="sm">
-            <Paper
-            elevation={4}
+        <Container className="sign-page" maxWidth="sm"  >
+            <Paper sx={{marginTop: 19}}
+            elevation={3}
             className="sign-container"
             component="form"
             onSubmit={handleSubmit}
@@ -52,7 +52,7 @@ export function SignPage(){
             <Typography variant="h5" align="center" gutterBottom>
                 Cadastro
             </Typography>
-            <TextField
+            <TextField 
                 fullWidth
                 label="Nome"
                 variant="outlined"
@@ -70,6 +70,18 @@ export function SignPage(){
                 onChange={(e) => setEmail(e.target.value)}
                 required
             />
+
+        <TextField
+            fullWidth
+            label="Phone"
+            variant="outlined"
+            margin="normal"
+            value={phone}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+
+
             <TextField
                 fullWidth
                 label="Senha"
@@ -80,6 +92,8 @@ export function SignPage(){
                 onChange={(e) => setPassword(e.target.value)}
                 required
             />
+
+
             <TextField
                 fullWidth
                 label="Confirmar Senha"
@@ -104,7 +118,7 @@ export function SignPage(){
             </Button>
             <Typography align="center" marginTop={3}>
                 Já tem uma conta?{" "}
-                <Link href="/login" underline="hover">
+                <Link href="/" underline="hover">
                 Faça login.
                 </Link>
             </Typography>
@@ -112,7 +126,7 @@ export function SignPage(){
         </Container>
         <Box>
             <footer className="footer">
-            <Typography variant="body2" align="center" color="textSecondary">
+            <Typography variant="body2" align="center" color="textSecondary" marginTop={10}>
                 © {new Date().getFullYear()} Findy. Todos os direitos reservados.
             </Typography>
             </footer>
