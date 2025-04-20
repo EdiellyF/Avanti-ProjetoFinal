@@ -10,8 +10,6 @@ function ToolBarFindy() {
         <span className="toolbar-logo-text"></span>
       </div>
       <div className="toolbar-buttons">
-        <button className="toolbar-button">LOGIN</button>
-        <button className="toolbar-button secondary">CADASTRAR</button>
       </div>
     </div>
   );
