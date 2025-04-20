@@ -1,0 +1,88 @@
+.register-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.register-container {
+  padding: 40px;
+  border-radius: 8px;
+}
+
+.img-container-register {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.img-container-register .profile-avatar-register {
+  margin-bottom: 16px;
+  border-radius: 50%;
+  border: 2px solid #2d6a4f;
+  box-sizing: border-box;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 250px;
+  height: 250px;
+}
+
+.upload-button-register {
+  font-weight: bold;
+  margin-bottom: 8px;
+  border: 1px solid #000;
+}
+
+.upload-button-register:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transform: scale(1.01 );
+}
+
+.upload-description-register {
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin-top: 8px;
+}
+
+.form-container-register {
+  display: flex;
+  padding-top: 45px;
+
+}
+
+.form-fields-register {
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+  gap: 16px;
+}
+
+.form-fields-register .submit-button-register {
+  margin-top: 16px;
+  background-color: #2d6a4f;
+  color: #ffffff;
+  font-weight: bold;
+  border: none;
+}
+
+.submit-button-register:hover {
+  background-color: #2d6a4f;
+  transform: scale(1.01 );
+}
+
+.login-text {
+  margin-top: 16px;
+  text-align: center;
+  color: #2d6a4f;
+  font-size: 0.9rem;
+}
+
+.login-link-register {
+  color: #2d6a4f;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.login-link-register:hover {
+  text-decoration: underline;
+}
