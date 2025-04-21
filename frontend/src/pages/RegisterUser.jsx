@@ -1,6 +1,8 @@
 import React from "react";
 import ToolBarFindy from "../components/ToolBarFindy";
 import './../styles/RegisterUser.css';
+import { registerUser } from "../api/userService.js";
+
 import {
     Button,
     TextField,
@@ -12,6 +14,8 @@ import {
     Grid,
     Avatar,
 } from "@mui/material";
+
+
 
 function ImageUpload({ profileImage, onImageUpload }) {
   return (
@@ -45,6 +49,7 @@ export function RegisterUser() {
   const [formData, setFormData] = React.useState({
     name: "",
     email: "",
+    phone: "",
     password: "",
     confirmPassword: "",
   });
@@ -62,7 +67,7 @@ export function RegisterUser() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
@@ -70,10 +75,23 @@ export function RegisterUser() {
       return;
     }
 
-    console.log("Nome:", formData.name);
-    console.log("E-mail:", formData.email);
-    console.log("Senha:", formData.password);
-    console.log("Imagem de Perfil:", profileImage);
+    const userData = {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          password: formData.password,
+        }
+    try{
+      await registerUser(userData);
+
+     alert("Usuário registrado com sucesso!");
+    }catch(error){
+      alert("erro")
+    }
+    
+
+   
+    
   };
 
   return (
@@ -116,6 +134,16 @@ export function RegisterUser() {
                 onChange={handleInputChange}
                 required
               />
+
+              <TextField
+               name="phone"
+                label="phone"
+                variant="outlined"
+                margin="normal"
+                value={formData.phone}
+                onChange={handleInputChange}
+              ></TextField>
+
               <TextField
                 fullWidth
                 name="password"
