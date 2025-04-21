@@ -3,7 +3,7 @@ import ToolBarFindy from "../components/ToolBarFindy";
 import FooterFindy from "../components/FooterFindy";
 import "./../styles/RegisterItem.css";
 
-function RegisterItem() {
+export function RegisterItem() {
   const [preview, setPreview] = useState(null);
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split("T")[0]);
 
