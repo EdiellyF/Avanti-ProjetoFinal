@@ -13,7 +13,9 @@ import {
     Container,
     Grid,
     Avatar,
+    Alert,
 } from "@mui/material";
+
 
 
 
@@ -55,6 +57,9 @@ export function RegisterUser() {
   });
   const [profileImage, setProfileImage] = React.useState(null);
 
+  const [successMessage, setSuccessMessage] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState("");
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
@@ -83,10 +88,13 @@ export function RegisterUser() {
         }
     try{
       await registerUser(userData);
-
-     alert("Usuário registrado com sucesso!");
+      setSuccessMessage(true);
+      setTimeout(() => {
+        setSuccessMessage(false);
+        window.location.href = "/"; 
+      }, 300000);
     }catch(error){
-      alert("erro")
+      setErrorMessage(`Erro: ${error.message}`);
     }
     
 
@@ -96,6 +104,7 @@ export function RegisterUser() {
 
   return (
     <>
+  
       <AppBar position="fixed" className="appbar">
         <Toolbar disableGutters>
           <ToolBarFindy />
@@ -114,6 +123,20 @@ export function RegisterUser() {
           {/* Coluna do Formulário */}
           <Grid className="form-container-register">
             <form onSubmit={handleSubmit} className="form-fields-register">
+            {successMessage && (
+              <Alert severity="success"
+              variant="outlined" >
+                Usuário registrado com sucesso!
+                </Alert>
+            )}
+
+            {errorMessage && (
+              <Alert severity="error" className="error-alert">
+                {errorMessage}
+              </Alert>
+            )}
+
+
               <TextField
                 fullWidth
                 name="name"
