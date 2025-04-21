@@ -41,7 +41,7 @@ function ImageUpload({ profileImage, onImageUpload }) {
   );
 }
 
-function RegisterUser() {
+export function RegisterUser() {
   const [formData, setFormData] = React.useState({
     name: "",
     email: "",
