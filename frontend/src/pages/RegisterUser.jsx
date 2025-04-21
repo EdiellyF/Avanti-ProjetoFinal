@@ -1,6 +1,8 @@
 import React from "react";
 import ToolBarFindy from "../components/ToolBarFindy";
 import './../styles/RegisterUser.css';
+import { registerUser } from "../api/userService.js";
+
 import {
     Button,
     TextField,
@@ -11,7 +13,11 @@ import {
     Container,
     Grid,
     Avatar,
+    Alert,
 } from "@mui/material";
+
+
+
 
 function ImageUpload({ profileImage, onImageUpload }) {
   return (
@@ -41,14 +47,18 @@ function ImageUpload({ profileImage, onImageUpload }) {
   );
 }
 
-function RegisterUser() {
+export function RegisterUser() {
   const [formData, setFormData] = React.useState({
     name: "",
     email: "",
+    phone: "",
     password: "",
     confirmPassword: "",
   });
   const [profileImage, setProfileImage] = React.useState(null);
+
+  const [successMessage, setSuccessMessage] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState("");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -62,7 +72,7 @@ function RegisterUser() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
@@ -70,14 +80,31 @@ function RegisterUser() {
       return;
     }
 
-    console.log("Nome:", formData.name);
-    console.log("E-mail:", formData.email);
-    console.log("Senha:", formData.password);
-    console.log("Imagem de Perfil:", profileImage);
+    const userData = {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          password: formData.password,
+        }
+    try{
+      await registerUser(userData);
+      setSuccessMessage(true);
+      setTimeout(() => {
+        setSuccessMessage(false);
+        window.location.href = "/"; 
+      }, 300000);
+    }catch(error){
+      setErrorMessage(`Erro: ${error.message}`);
+    }
+    
+
+   
+    
   };
 
   return (
     <>
+  
       <AppBar position="fixed" className="appbar">
         <Toolbar disableGutters>
           <ToolBarFindy />
@@ -96,6 +123,20 @@ function RegisterUser() {
           {/* Coluna do Formulário */}
           <Grid className="form-container-register">
             <form onSubmit={handleSubmit} className="form-fields-register">
+            {successMessage && (
+              <Alert severity="success"
+              variant="outlined" >
+                Usuário registrado com sucesso!
+                </Alert>
+            )}
+
+            {errorMessage && (
+              <Alert severity="error" className="error-alert">
+                {errorMessage}
+              </Alert>
+            )}
+
+
               <TextField
                 fullWidth
                 name="name"
@@ -116,6 +157,16 @@ function RegisterUser() {
                 onChange={handleInputChange}
                 required
               />
+
+              <TextField
+               name="phone"
+                label="phone"
+                variant="outlined"
+                margin="normal"
+                value={formData.phone}
+                onChange={handleInputChange}
+              ></TextField>
+
               <TextField
                 fullWidth
                 name="password"

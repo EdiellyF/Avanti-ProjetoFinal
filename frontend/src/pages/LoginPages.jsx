@@ -25,6 +25,7 @@ function LoginPages() {
 
   return (
     <>
+        
       <AppBar position="fixed" sx={{ backgroundColor: "#1c1c1c" }}>
         <Toolbar disableGutters>
           <ToolBarFindy />
@@ -50,6 +51,8 @@ function LoginPages() {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
+
+          
           <TextField
             fullWidth
             label="Senha"
@@ -94,6 +97,8 @@ function LoginPages() {
           </Typography>
         </footer>
       </Box>
+  
+
     </>
   );
 }
