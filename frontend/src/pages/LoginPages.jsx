@@ -25,6 +25,7 @@ function LoginPages() {
 
   return (
     <>
+        
       <AppBar position="fixed" sx={{ backgroundColor: "#1c1c1c" }}>
         <Toolbar disableGutters>
           <ToolBarFindy />
@@ -96,6 +97,8 @@ function LoginPages() {
           </Typography>
         </footer>
       </Box>
+  
+
     </>
   );
 }
