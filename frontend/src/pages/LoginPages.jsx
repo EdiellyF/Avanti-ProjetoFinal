@@ -13,12 +13,23 @@ import {
 } from "@mui/material";
 import "./../styles/LoginPages.css";
 
+import { loginUser } from "../services/userService.js";
+
 function LoginPages() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const data = {
+      email: email,
+      password: password
+    };
+    const res = loginUser(data);
+    
+    
+
     console.log("E-mail:", email);
     console.log("Senha:", password);
   };
