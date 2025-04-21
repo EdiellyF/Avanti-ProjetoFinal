@@ -1,7 +1,7 @@
 import React from "react";
 import ToolBarFindy from "../components/ToolBarFindy";
 import './../styles/RegisterUser.css';
-import { registerUser } from "../api/userService.js";
+import { registerUser } from "../services/userService.js";
 
 import {
     Button,
@@ -92,7 +92,7 @@ export function RegisterUser() {
       setTimeout(() => {
         setSuccessMessage(false);
         window.location.href = "/"; 
-      }, 300000);
+      }, 3000);
     }catch(error){
       setErrorMessage(`Erro: ${error.message}`);
     }

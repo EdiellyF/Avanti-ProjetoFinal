@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import ToolBarFindy from "../components/ToolBarFindy";
+import {AuthContext} from "../context/AuthContext.jsx"
 import {
   Box,
   Button,
@@ -10,21 +11,49 @@ import {
   Toolbar,
   Container,
   Paper,
+  Alert
 } from "@mui/material";
 import "./../styles/LoginPages.css";
+
+
+import { loginUser } from "../services/userService.js";
 
 function LoginPages() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("")
+  const { logar} = useContext(AuthContext);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+
+    const data = {
+      email: email,
+      password: password
+    };
+
+    try{
+      const res = await loginUser(data);
+    
+      logar(res);
+    }catch(error){
+      setErrorMessage(`Erro: ${error.message}`);
+    }
+    
+
+
     console.log("E-mail:", email);
     console.log("Senha:", password);
   };
 
   return (
     <>
+              {errorMessage && (
+                      <Alert severity="error" className="error-alert">
+                        {errorMessage}
+                      </Alert>
+                    )}
         
       <AppBar position="fixed" sx={{ backgroundColor: "#1c1c1c" }}>
         <Toolbar disableGutters>
