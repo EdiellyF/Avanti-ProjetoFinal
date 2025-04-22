@@ -1,11 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ToolBarFindy from "../components/ToolBarFindy";
 import FooterFindy from "../components/FooterFindy";
 import "./../styles/RegisterItem.css";
+import { Box, MenuItem, TextField } from "@mui/material";
+import { getCategories } from "../services/categoryService";
 
 export function RegisterItem() {
   const [preview, setPreview] = useState(null);
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split("T")[0]);
+  const [categoria, setCategoria] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [formData, setFormData] = React.useState({
+  nome: "",
+    descricao: "",
+    data: "",
+    localizacao: "",
+    contato: "",
+   });
+
+
+  useEffect(() => {
+      const buscarCategorias = async () => {
+        try{
+          const response = await getCategories();
+          setCategoria(response);
+        } catch(error){
+          console.log("error")
+        }
+        
+      };
+      buscarCategorias();
+  }, []);
+
+
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -21,22 +48,33 @@ export function RegisterItem() {
 
         <div className="register-container">
           <form className="register-form">
-            <div className="form-group">
-              <label>Categoria:</label>
-              <select>
-                <option value="">Selecione</option>
-                <option value="documento">Documento</option>
-                <option value="eletronico">Eletrônico</option>
-                <option value="roupa">Roupa</option>
+            <div className="form-group" sx={{ width: '100%', maxWidth: 300, margin: '0 auto' }}>
+              <label>Categoria</label>
+            <select
+                name="categoria"
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value.toString())}
+              >
+                            {categoria
+            
+                            .map((c) => (
+            
+                                  <option key={c.id} value={c.id}>
+                                    {c.name}
+                                  </option>
+                            ))}
               </select>
+
+
+              
             </div>
 
             <div className="form-group">
-              <label>Condição:</label>
+              <label>STATUS:</label>
               <select>
                 <option value="">Selecione</option>
-                <option value="novo">Novo</option>
-                <option value="usado">Usado</option>
+                <option value="perdido">PERDIDO</option>
+                <option value="encontrado">ENCONTRADO</option>
               </select>
             </div>
 
@@ -49,7 +87,7 @@ export function RegisterItem() {
               />
             </div>
 
-            <div className="form-group">
+            {/* <div className="form-group">
               <label>Período:</label>
               <select>
                 <option value="">Selecione</option>
@@ -57,7 +95,9 @@ export function RegisterItem() {
                 <option value="tarde">Tarde</option>
                 <option value="noite">Noite</option>
               </select>
-            </div>
+            </div> */}
+
+
 
             <div className="form-group">
               <label>Local onde foi encontrado ou perdido:</label>
