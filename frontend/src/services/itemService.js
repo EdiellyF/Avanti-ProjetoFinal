@@ -1,4 +1,4 @@
-import api from './axios';
+import api from "./axios";
 
 export const getItems = async () => {
   const res = await api.get('/item');
