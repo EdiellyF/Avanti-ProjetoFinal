@@ -3,7 +3,7 @@ import ToolBarFindy from '../components/ToolBarFindy';
 import FooterFindy from '../components/FooterFindy';
 import SearchBar from '../components/SearchBar';
 import ItemCard from '../components/ItemCard';
-import { getItems } from '../api/itemService';
+import { getItems } from '../services/itemService';
 import '../styles/HomePage.css';
 
 const HomePage = () => {
@@ -17,7 +17,7 @@ const HomePage = () => {
     async function fetch() {
       try {
         const dataRaw = await getItems();
-        const dataArr = Array.isArray(dataRaw) ? dataRaw : (dataRaw.items || []);
+        const dataArr = Array.isArray(dataRaw) ? dataRaw : (dataRaw.itens || []);
         setItems(dataArr);
         setFiltered(dataArr);
       } catch {
@@ -37,7 +37,7 @@ const HomePage = () => {
     const term = searchTerm.toLowerCase();
     setFiltered(
       items.filter((i) =>
-        [i.name, i.description, i.category, i.location]
+        [i.nome, i.descricao, i.categoria.name, i.localizacao] 
           .filter(Boolean)
           .some((field) => field.toLowerCase().includes(term))
       )

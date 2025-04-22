@@ -5,6 +5,7 @@ import RegisterUser from './pages/RegisterUser';
 
 import { useContext } from 'react';
 import RegisterItem from './pages/RegisterItem';
+import HomePage from './pages/HomePage';
 
 const AuthRota = ({component: Component}) => {
   const {token} = useContext(AuthContext);
@@ -17,9 +18,10 @@ function App() {
     <Router>
       
         <Routes>
-          <Route path="/" element={<AuthProvider><LoginPages /></AuthProvider>}>  </Route>
+          <Route path="/login" element={<AuthProvider><LoginPages /></AuthProvider>}>  </Route>
           <Route path="/cadastrar" element={<RegisterUser/>}> </Route>
           <Route path="/item/novo" element={<AuthRota component={RegisterItem} />} />
+          <Route path='/'  element={<HomePage/>}/>
         </Routes>
         
     </Router>
