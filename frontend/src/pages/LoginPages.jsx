@@ -1,135 +1,195 @@
-import React, { useContext, useState } from "react";
-import ToolBarFindy from "../components/ToolBarFindy";
-import {AuthContext} from "../context/AuthContext.jsx"
+"use client"
+
+import { useContext, useState } from "react"
+import { useNavigate, useLocation, Link as RouterLink } from "react-router-dom"
 import {
   Box,
   Button,
   TextField,
   Typography,
   Link,
-  AppBar,
-  Toolbar,
-  Container,
   Paper,
-  Alert
-} from "@mui/material";
-import "./../styles/LoginPages.css";
-
-
-import { loginUser } from "../services/userService.js";
+  Alert,
+  InputAdornment,
+  IconButton,
+  Divider,
+} from "@mui/material"
+import { Visibility, VisibilityOff, Email, Lock } from "@mui/icons-material"
+import { AuthContext } from "../context/AuthContext"
+import { loginUser } from "../services/userService"
+import Layout from "../components/Layout"
 
 function LoginPages() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
   const [errorMessage, setErrorMessage] = useState("")
-  const { logar} = useContext(AuthContext);
+  const [loading, setLoading] = useState(false)
+
+  const { login } = useContext(AuthContext)
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  // Get the redirect path from location state or default to home
+  const from = location.state?.from?.pathname || "/"
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
+    setErrorMessage("")
 
-
-    const data = {
-      email: email,
-      password: password
-    };
-
-    try{
-      const res = await loginUser(data);
-    
-      logar(res);
-    }catch(error){
-      setErrorMessage(`Erro: ${error.message}`);
+    if (!email || !password) {
+      setErrorMessage("Por favor, preencha todos os campos.")
+      return
     }
-    
 
+    try {
+      setLoading(true)
+      const data = { email, password }
+      const token = await loginUser(data)
 
-    console.log("E-mail:", email);
-    console.log("Senha:", password);
-  };
+      if (token) {
+        login(token)
+        navigate(from, { replace: true })
+      } else {
+        throw new Error("Não foi possível obter o token de autenticação")
+      }
+    } catch (error) {
+      console.error("Erro ao fazer login:", error)
+      setErrorMessage(
+        typeof error === "string" ? error : "Falha no login. Verifique suas credenciais e tente novamente.",
+      )
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword(!showPassword)
+  }
 
   return (
-    <>
-              {errorMessage && (
-                      <Alert severity="error" className="error-alert">
-                        {errorMessage}
-                      </Alert>
-                    )}
-        
-      <AppBar position="fixed" sx={{ backgroundColor: "#1c1c1c" }}>
-        <Toolbar disableGutters>
-          <ToolBarFindy />
-        </Toolbar>
-      </AppBar>
-
-      <Container className="login-page" maxWidth="sm">
+    <Layout>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "70vh",
+        }}
+      >
         <Paper
           elevation={3}
-          className="login-container"
-          component="form"
-          onSubmit={handleSubmit}
+          sx={{
+            p: 4,
+            width: "100%",
+            maxWidth: 450,
+            borderRadius: 3,
+          }}
         >
-          <Typography variant="h5" align="center" gutterBottom>
+          <Typography
+            variant="h4"
+            align="center"
+            gutterBottom
+            sx={{ fontWeight: "bold", color: "primary.main", mb: 3 }}
+          >
             Login
           </Typography>
-          <TextField
-            fullWidth
-            label="E-mail"
-            variant="outlined"
-            margin="normal"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
 
-          
-          <TextField
-            fullWidth
-            label="Senha"
-            type="password"
-            variant="outlined"
-            margin="normal"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <Link
-            href="#"
-            underline="hover"
-            sx={{ display: "block", textAlign: "right", marginTop: 1 }}
-          >
-            Esqueceu a senha?
-          </Link>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{
-              marginTop: 2,
-              backgroundColor: "#2d6a4f",
-              "&:hover": { backgroundColor: "#1b4332" },
-            }}
-          >
-            ENTRAR
-          </Button>
-          <Typography align="center" marginTop={3}>
-            Ainda não tem uma conta?{" "}
-            <Link href="#" underline="hover">
-              Cadastre-se.
-            </Link>
-          </Typography>
+          {errorMessage && (
+            <Alert severity="error" sx={{ mb: 3 }} onClose={() => setErrorMessage("")}>
+              {errorMessage}
+            </Alert>
+          )}
+
+          <Box component="form" onSubmit={handleSubmit} noValidate>
+            <TextField
+              fullWidth
+              margin="normal"
+              required
+              id="email"
+              label="E-mail"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Email color="action" />
+                  </InputAdornment>
+                ),
+              }}
+            />
+
+            <TextField
+              fullWidth
+              margin="normal"
+              required
+              name="password"
+              label="Senha"
+              type={showPassword ? "text" : "password"}
+              id="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Lock color="action" />
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleTogglePasswordVisibility}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+
+            <Box sx={{ textAlign: "right", mt: 1 }}>
+              <Link component={RouterLink} to="/recuperar-senha" variant="body2">
+                Esqueceu a senha?
+              </Link>
+            </Box>
+
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              size="large"
+              sx={{ mt: 3, mb: 2, py: 1.5 }}
+              disabled={loading}
+            >
+              {loading ? "Entrando..." : "Entrar"}
+            </Button>
+
+            <Divider sx={{ my: 3 }}>
+              <Typography variant="body2" color="text.secondary">
+                ou
+              </Typography>
+            </Divider>
+
+            <Box sx={{ textAlign: "center" }}>
+              <Typography variant="body1">
+                Ainda não tem uma conta?{" "}
+                <Link component={RouterLink} to="/cadastrar" variant="body1" sx={{ fontWeight: "bold" }}>
+                  Cadastre-se
+                </Link>
+              </Typography>
+            </Box>
+          </Box>
         </Paper>
-      </Container>
-      <Box>
-        <footer className="footer">
-          <Typography variant="body2" align="center" color="textSecondary">
-            © {new Date().getFullYear()} Findy. Todos os direitos reservados.
-          </Typography>
-        </footer>
       </Box>
-  
-
-    </>
-  );
+    </Layout>
+  )
 }
 
-export default LoginPages;
+export default LoginPages

@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState, useContext } from "react"
-import { useNavigate } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import {
   Box,
   Typography,
@@ -16,27 +16,31 @@ import {
   Alert,
   FormHelperText,
   Divider,
+  CircularProgress,
 } from "@mui/material"
-import { PhotoCamera, Delete } from "@mui/icons-material"
+import { PhotoCamera, Delete, ArrowBack } from "@mui/icons-material"
 import { getCategories } from "../services/categoryService"
-import { createItem } from "../services/itemService"
+import { getItemById, updateItem } from "../services/itemService"
 import { AuthContext } from "../context/AuthContext"
 import Layout from "../components/Layout"
 
-export function RegisterItem() {
+export function EditItem() {
+  const { id } = useParams()
   const navigate = useNavigate()
-  const { token } = useContext(AuthContext)
+  const { token, user } = useContext(AuthContext)
   const [preview, setPreview] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [fetchLoading, setFetchLoading] = useState(true)
   const [categories, setCategories] = useState([])
   const [successMessage, setSuccessMessage] = useState("")
   const [errorMessage, setErrorMessage] = useState("")
   const [errors, setErrors] = useState({})
+  const [originalItem, setOriginalItem] = useState(null)
 
   const [formData, setFormData] = useState({
     nome: "",
     descricao: "",
-    data: new Date().toISOString().split("T")[0],
+    data: "",
     localizacao: "",
     contato: "",
     status: "",
@@ -45,17 +49,50 @@ export function RegisterItem() {
   })
 
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchData = async () => {
       try {
-        const response = await getCategories()
-        setCategories(response)
+        setFetchLoading(true)
+        const [itemResponse, categoriesResponse] = await Promise.all([getItemById(id), getCategories()])
+
+        setOriginalItem(itemResponse)
+        setCategories(categoriesResponse || [])
+
+        // Verificar se o usuário tem permissão para editar este item
+        if (user && itemResponse && itemResponse.usuarioId !== user.id && user.role !== "ADMIN") {
+          setErrorMessage("Você não tem permissão para editar este item.")
+          return
+        }
+
+        // Preencher o formulário com os dados do item
+        setFormData({
+          nome: itemResponse.nome || "",
+          descricao: itemResponse.descricao || "",
+          data: itemResponse.data ? new Date(itemResponse.data).toISOString().split("T")[0] : "",
+          localizacao: itemResponse.localizacao || "",
+          contato: itemResponse.contato || "",
+          status: itemResponse.status || "",
+          categoriaId: itemResponse.categoriaId || "",
+          foto: null,
+        })
+
+        // Definir a pré-visualização da imagem se existir
+        if (itemResponse.foto) {
+          setPreview(itemResponse.foto)
+        }
       } catch (error) {
-        console.error("Erro ao buscar categorias:", error)
-        setErrorMessage("Erro ao carregar categorias. Por favor, recarregue a página.")
+        console.error("Erro ao carregar dados:", error)
+        setErrorMessage(
+          typeof error === "string" ? error : "Erro ao carregar dados do item. Por favor, tente novamente.",
+        )
+      } finally {
+        setFetchLoading(false)
       }
     }
-    fetchCategories()
-  }, [])
+
+    if (id && token) {
+      fetchData()
+    }
+  }, [id, token, user])
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -146,32 +183,19 @@ export function RegisterItem() {
 
       const itemData = {
         ...formData,
-        foto: fotoBase64,
+        foto: fotoBase64 || originalItem.foto, // Manter a foto original se não houver nova
       }
 
-      const response = await createItem(itemData)
-      setSuccessMessage("Item cadastrado com sucesso!")
-
-      // Reset form
-      setFormData({
-        nome: "",
-        descricao: "",
-        data: new Date().toISOString().split("T")[0],
-        localizacao: "",
-        contato: "",
-        status: "",
-        categoriaId: "",
-        foto: null,
-      })
-      setPreview(null)
+      await updateItem(id, itemData)
+      setSuccessMessage("Item atualizado com sucesso!")
 
       // Redirect after success
       setTimeout(() => {
-        navigate("/")
+        navigate(`/item/${id}`)
       }, 2000)
     } catch (error) {
-      console.error("Erro ao cadastrar item:", error)
-      setErrorMessage(typeof error === "string" ? error : "Erro ao cadastrar item. Por favor, tente novamente.")
+      console.error("Erro ao atualizar item:", error)
+      setErrorMessage(typeof error === "string" ? error : "Erro ao atualizar item. Por favor, tente novamente.")
     } finally {
       setLoading(false)
     }
@@ -234,7 +258,34 @@ export function RegisterItem() {
   if (!token) {
     return (
       <Layout>
-        <Alert severity="warning">Você precisa estar logado para cadastrar um item.</Alert>
+        <Alert severity="warning">Você precisa estar logado para editar um item.</Alert>
+      </Layout>
+    )
+  }
+
+  if (fetchLoading) {
+    return (
+      <Layout>
+        <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
+          <CircularProgress />
+        </Box>
+      </Layout>
+    )
+  }
+
+  if (errorMessage && !formData.nome) {
+    return (
+      <Layout>
+        <Alert severity="error">{errorMessage}</Alert>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => navigate(-1)}
+          startIcon={<ArrowBack />}
+          sx={{ mt: 2 }}
+        >
+          Voltar
+        </Button>
       </Layout>
     )
   }
@@ -242,6 +293,16 @@ export function RegisterItem() {
   return (
     <Layout>
       <Box sx={{ maxWidth: 900, mx: "auto" }}>
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={() => navigate(-1)}
+          startIcon={<ArrowBack />}
+          sx={{ mb: 3 }}
+        >
+          Voltar
+        </Button>
+
         <Paper
           elevation={3}
           sx={{
@@ -255,7 +316,7 @@ export function RegisterItem() {
             gutterBottom
             sx={{ fontWeight: "bold", color: "primary.main", mb: 3 }}
           >
-            Cadastrar Item
+            Editar Item
           </Typography>
 
           <Divider sx={{ mb: 4 }} />
@@ -459,7 +520,7 @@ export function RegisterItem() {
                 disabled={loading}
                 sx={{ minWidth: 200, py: 1.5 }}
               >
-                {loading ? "Cadastrando..." : "Cadastrar Item"}
+                {loading ? "Atualizando..." : "Atualizar Item"}
               </Button>
             </Box>
           </Box>
@@ -469,4 +530,4 @@ export function RegisterItem() {
   )
 }
 
-export default RegisterItem
+export default EditItem
