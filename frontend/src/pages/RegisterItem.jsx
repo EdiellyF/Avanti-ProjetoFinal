@@ -22,6 +22,11 @@ import { getCategories } from "../services/categoryService"
 import { createItem } from "../services/itemService"
 import { AuthContext } from "../context/AuthContext"
 import Layout from "../components/Layout"
+import axios from "axios"
+import AddLocationIcon from '@mui/icons-material/AddLocation';
+
+
+
 
 export function RegisterItem() {
   const navigate = useNavigate()
@@ -44,7 +49,73 @@ export function RegisterItem() {
     foto: null,
   })
 
+
+  async function obterCoordenadas(posicao) {
+    const { latitude, longitude } = posicao.coords
+
+    axios
+    ("https://nominatim.openstreetmap.org/reverse", {
+      params: {
+        lat: latitude,
+        lon: longitude,
+        format: "json",
+      },
+                    headers: {
+                      "Accept-Language": "pt-BR", 
+                    },
+                  })
+            .then((response) => {
+              const dados = response.data
+              if (dados && dados.display_name) {
+                setFormData((prev) => ({
+                  ...prev,
+                  localizacao: dados.display_name,
+                }))
+                setErrors((prev) => ({ ...prev, localizacao: "" }))
+              } else {
+                alert("Não foi possível encontrar o endereço.")
+              }
+            })
+            .catch((error) => {
+              console.error("Erro ao buscar endereço:", error)
+              alert("Erro ao buscar endereço.")
+            })
+
+    
+  }
+  
+  
+
+
+  function buscarEndereco() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(obterCoordenadas, mostrarErro);
+    } else {
+      alert("Seu navegador não suporta Geolocalização.");
+    }
+  }
+
+  function mostrarErro(erro) {
+    alert("Erro ao obter localização: " + erro.message);
+  }
+  
+  
+
   useEffect(() => {
+
+    window.preencherEndereco = function (dados) {
+      if (dados && dados.display_name) {
+        setFormData((prev) => ({
+          ...prev,
+          localizacao: dados.display_name,
+        }))
+        setErrors((prev) => ({ ...prev, localizacao: "" }))
+      } else {
+        alert("Não foi possível encontrar o endereço.")
+      }
+    }
+    
+
     const fetchCategories = async () => {
       try {
         const response = await getCategories()
@@ -272,7 +343,7 @@ export function RegisterItem() {
             </Alert>
           )}
 
-          <Box component="form" onSubmit={handleSubmit} noValidate>
+          <Box component="form" onSubmit={handleSubmit}   noValidate>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -287,6 +358,15 @@ export function RegisterItem() {
                   helperText={errors.nome}
                 />
               </Grid>
+
+              <Grid item xs={12}>
+              
+                    <Button variant="outlined" onClick={buscarEndereco} startIcon={<AddLocationIcon/>}>
+                      Usar minha localização
+                    </Button>
+            
+              </Grid>
+
 
               <Grid item xs={12} sm={6}>
                 <FormControl fullWidth required error={!!errors.categoriaId}>
