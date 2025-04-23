@@ -9,6 +9,7 @@ import SearchPage from "./pages/SearchPage"
 import UserItems from "./pages/UserItems"
 import ProtectedRoute from "./utils/ProtectedRoute"
 import UserProfile from "./pages/UserProfile"
+import EditItem from "./pages/EditItem"
 
 const App = () => {
   return (
@@ -27,6 +28,15 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <RegisterItem />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/item/editar/:id"
+            element={
+              <ProtectedRoute>
+                <EditItem />
               </ProtectedRoute>
             }
           />
