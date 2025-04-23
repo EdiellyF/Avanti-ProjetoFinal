@@ -76,7 +76,7 @@ const ItemDetail = () => {
     try {
       setDeleteLoading(true)
       setDeleteError("")
-      await deleteItem(id)
+      await deleteItem(id, localStorage.getItem("token"))
       navigate("/")
     } catch (error) {
       console.error("Error deleting item:", error)
