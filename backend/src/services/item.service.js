@@ -10,9 +10,12 @@ export class ItemService {
   }
 
   async createItem(itemData, usuarioId) {
+    console.log(itemData)
     if (!this.#validateRequiredFields(itemData)) {
       throw new ValidationError("Missing required fields");
     }
+
+    
 
     itemData.status = itemData.status.toUpperCase();
     if (!this.#validateStatus(itemData.status)) {

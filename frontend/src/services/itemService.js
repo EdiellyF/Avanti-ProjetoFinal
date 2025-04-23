@@ -10,9 +10,20 @@ export const getItemById = async (id) => {
   return res.data;
 };
 
-export const createItem = async (itemData) => {
-  const res = await api.post('/item', itemData);
-  return res.data;
+export const createItem = async (itemData, token) => {
+  try {
+    console.log(itemData); 
+    const response = await api.post('/item', itemData, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`, // ESSA LINHA É ESSENCIAL
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao criar item:', error);
+    throw error;
+  }
 };
 
 export const updateItem = async (id, itemData) => {
