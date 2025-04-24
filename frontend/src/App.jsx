@@ -10,6 +10,9 @@ import UserItems from "./pages/UserItems"
 import ProtectedRoute from "./utils/ProtectedRoute"
 import UserProfile from "./pages/UserProfile"
 
+import EditItem from "./pages/EditItem"
+
+
 const App = () => {
   return (
     <AuthProvider>
@@ -21,12 +24,23 @@ const App = () => {
           <Route path="/buscar" element={<SearchPage />} />
           <Route path="/item/:id" element={<ItemDetail />} />
 
+
           {/* Protected Routes */}
           <Route
             path="/item/novo"
             element={
               <ProtectedRoute>
                 <RegisterItem />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/item/editar/:id"
+            element={
+              <ProtectedRoute>
+                <EditItem />
+
               </ProtectedRoute>
             }
           />

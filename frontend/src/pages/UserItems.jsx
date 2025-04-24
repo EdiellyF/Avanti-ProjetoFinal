@@ -21,7 +21,9 @@ const UserItems = () => {
     async function fetchData() {
       try {
         setLoading(true)
-        // Em uma aplicação real, você teria um endpoint específico para itens do usuário
+
+        
+
         const response = await getItems()
 
         let itemsData = []

@@ -58,7 +58,9 @@ export class ItemService {
       throw new NotFoundError("Item not found")
     }
 
-    if (item.usuarioId !== userId || role !== "ADMIN") {
+
+    if (item.usuarioId !== userId && role !== "ADMIN") {
+
       throw new ForbiddenError("Você só pode deletar itens relacionados a você")
     }
 

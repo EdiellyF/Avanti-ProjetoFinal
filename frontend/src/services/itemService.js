@@ -53,7 +53,9 @@ export const createItem = async (itemData) => {
     // Log para depuração
     console.log("Dados enviados para o servidor:", JSON.stringify(itemData, null, 2))
 
-    const response = await api.post("/item", itemData)
+
+    const response = await api.post("/item", itemData  )
+
     return response.data
   } catch (error) {
     console.error("Erro ao criar item:", error)
@@ -98,9 +100,16 @@ export const updateItem = async (id, itemData) => {
   }
 }
 
-export const deleteItem = async (id) => {
+
+export const deleteItem = async (id, token) => {
   try {
-    const response = await api.delete(`/item/${id}`)
+    const response = await api.delete(`/item/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    }) 
+
     return response.data
   } catch (error) {
     console.error(`Erro ao excluir item ${id}:`, error)
