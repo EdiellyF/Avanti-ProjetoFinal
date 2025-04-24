@@ -18,7 +18,7 @@ const decodeToken = (token) => {
     )
 
     const decoded = JSON.parse(jsonPayload)
-    console.log("Token decodificado:", decoded)
+
     return decoded
   } catch (error) {
     console.error("Erro ao decodificar token:", error)
@@ -71,12 +71,7 @@ export const getUserInfo = () => {
       return null
     }
 
-    console.log("Informações do usuário extraídas do token:", {
-      id: decoded.id,
-      email: decoded.email,
-      role: decoded.role,
-    })
-
+   
     return {
       id: decoded.id,
       email: decoded.email,

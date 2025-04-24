@@ -32,7 +32,7 @@ export const getUserById = async (id) => {
       const itemsResponse = await api.get("/item")
       const allItems = itemsResponse.data.itens || itemsResponse.data || []
 
-      console.log("Total de itens recebidos:", allItems.length)
+      // console.log("Total de itens recebidos:", allItems.length)
 
       // Adicionar contagem de itens aos dados do usuário
       const userItems = allItems.filter((item) => {
@@ -43,7 +43,7 @@ export const getUserById = async (id) => {
         return isUserItem
       })
 
-      console.log("Itens filtrados para o usuário:", userItems.length)
+  
 
       // Adicionar estatísticas aos dados do usuário
       return {
