@@ -24,22 +24,16 @@ export const getUserById = async (id) => {
   try {
     const { data } = await api.get(`/users/${id}`)
 
-    // Adicionar logs para depuração
-    console.log("Dados do usuário recebidos:", data)
+   
 
     // Buscar também os itens do usuário para ter estatísticas completas
     try {
       const itemsResponse = await api.get("/item")
       const allItems = itemsResponse.data.itens || itemsResponse.data || []
 
-      // console.log("Total de itens recebidos:", allItems.length)
-
       // Adicionar contagem de itens aos dados do usuário
       const userItems = allItems.filter((item) => {
         const isUserItem = item.usuarioId === id || (item.user && item.user.id === id)
-        if (isUserItem) {
-          console.log("Item encontrado para o usuário:", item.id)
-        }
         return isUserItem
       })
 
