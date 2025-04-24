@@ -9,6 +9,7 @@ export class CategoryRepository {
     const categories = await prismaClient.category.findMany({
       select: {
         name: true,
+        id:true
       },
     });
     return categories;
