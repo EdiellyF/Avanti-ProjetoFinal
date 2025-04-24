@@ -22,8 +22,10 @@ import { getCategories } from "../services/categoryService"
 import { createItem } from "../services/itemService"
 import { AuthContext } from "../context/AuthContext"
 import Layout from "../components/Layout"
+
 import axios from "axios"
 import AddLocationIcon from '@mui/icons-material/AddLocation';
+
 
 
 
@@ -48,6 +50,7 @@ export function RegisterItem() {
     categoriaId: "",
     foto: null,
   })
+
 
 
   async function obterCoordenadas(posicao) {
@@ -87,6 +90,7 @@ export function RegisterItem() {
   
 
 
+
   function buscarEndereco() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(obterCoordenadas, mostrarErro);
@@ -102,6 +106,7 @@ export function RegisterItem() {
   
 
   useEffect(() => {
+
 
     window.preencherEndereco = function (dados) {
       if (dados && dados.display_name) {
@@ -343,7 +348,9 @@ export function RegisterItem() {
             </Alert>
           )}
 
+
           <Box component="form" onSubmit={handleSubmit}   noValidate>
+
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -358,6 +365,7 @@ export function RegisterItem() {
                   helperText={errors.nome}
                 />
               </Grid>
+
 
               <Grid item xs={12}>
               

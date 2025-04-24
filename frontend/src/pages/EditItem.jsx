@@ -36,7 +36,7 @@ export function EditItem() {
   const [errorMessage, setErrorMessage] = useState("")
   const [errors, setErrors] = useState({})
   const [originalItem, setOriginalItem] = useState(null)
- 
+
 
   const [formData, setFormData] = useState({
     nome: "",
@@ -91,6 +91,7 @@ export function EditItem() {
     }
 
     if (id && token && user) {
+
       fetchData()
     }
   }, [id, token, user])
@@ -365,7 +366,9 @@ export function EditItem() {
                       <em>Selecione</em>
                     </MenuItem>
                     {categories.map((category) => (
+
                       <MenuItem key={category.id} value={String(category.id ?? "")}>
+
                         {category.name}
                       </MenuItem>
                     ))}

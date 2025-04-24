@@ -21,7 +21,9 @@ const UserItems = () => {
     async function fetchData() {
       try {
         setLoading(true)
+
         
+
         const response = await getItems()
 
         let itemsData = []

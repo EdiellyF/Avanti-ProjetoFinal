@@ -9,7 +9,9 @@ import SearchPage from "./pages/SearchPage"
 import UserItems from "./pages/UserItems"
 import ProtectedRoute from "./utils/ProtectedRoute"
 import UserProfile from "./pages/UserProfile"
+
 import EditItem from "./pages/EditItem"
+
 
 const App = () => {
   return (
@@ -21,6 +23,7 @@ const App = () => {
           <Route path="/cadastrar" element={<RegisterUser />} />
           <Route path="/buscar" element={<SearchPage />} />
           <Route path="/item/:id" element={<ItemDetail />} />
+
 
           {/* Protected Routes */}
           <Route
@@ -37,6 +40,7 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <EditItem />
+
               </ProtectedRoute>
             }
           />
