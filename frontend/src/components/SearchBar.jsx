@@ -56,7 +56,7 @@ const SearchBar = ({ value, onChange, onSearch, categories = [], onFilterChange 
         }}
       >
         <InputBase
-          sx={{ ml: 1, flex: 1 }}
+          sx={{ ml: 3, flex: 1 }}
           placeholder="Buscar itens..."
           value={value}
           onChange={(e) => onChange(e.target.value)}

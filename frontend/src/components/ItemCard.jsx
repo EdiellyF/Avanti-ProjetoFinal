@@ -1,8 +1,4 @@
-
-
-
-
-  import { useState, useContext } from "react"
+import { useState, useContext } from "react"
   import {
     Card,
     CardContent,
@@ -20,6 +16,8 @@
   import { formatDate } from "../utils/formatters"
   import { updateItem } from "../services/itemService"
   import { AuthContext } from "../context/AuthContext"
+
+  import imageDefault from "../public/image-default.png"
 
   const ItemCard = ({ item, showQuickStatusChange = false }) => {
     const { user } = useContext(AuthContext)
@@ -52,8 +50,10 @@
     return (
       <Card
         elevation={2}
+
         sx={{
-          height: "100%",
+         height: 640,
+          width: 350,
           display: "flex",
           flexDirection: "column",
           transition: "transform 0.2s, box-shadow 0.2s",
@@ -62,6 +62,7 @@
             boxShadow: "0 10px 20px rgba(0,0,0,0.1)",
           },
           position: "relative",
+          overflow: "hidden"
         }}
       >
         {showQuickStatusChange && isOwner && (
@@ -89,15 +90,26 @@
 
         <CardMedia
           component="img"
-          height="180"
-          image={item.foto || "/placeholder.png"}
+          height="300"
+          width="100%"
+          image={item.foto || imageDefault}
           alt={item.nome}
           sx={{ objectFit: "cover" }}
+          onError={(e) => {
+            e.target.onerror = null; // Evita loop infinito
+            e.target.src = imageDefault; // Substitui pela imagem padrão
+          }}
         />
 
-        <CardContent sx={{ flexGrow: 1 }}>
+        <CardContent sx={{ flexGrow: 1,overflow: "hidden", display: "flex", flexDirection: "column" }}>
           <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", mb: 2 }}>
-            <Typography variant="h6" component="h2" gutterBottom>
+            <Typography variant="h6" component="h2" gutterBottom  sx={{
+              mr: 8,
+              display: "-webkit-box",
+              overflow: "hidden",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: 1,
+            }}>
               {item.nome}
             </Typography>
             <Chip label={statusLabel} color={statusColor} size="small" sx={{ fontWeight: "bold" }} />
@@ -119,7 +131,13 @@
 
           <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
             <LocationOn fontSize="small" color="action" sx={{ mr: 1 }} />
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" color="text.secondary" sx={{
+            
+        display: "-webkit-box",
+        overflow: "hidden",
+        WebkitBoxOrient: "vertical",
+        WebkitLineClamp: 1,
+      }}>
               {item.localizacao}
             </Typography>
           </Box>
