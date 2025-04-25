@@ -18,14 +18,14 @@ export const AuthProvider = ({ children }) => {
           setLoading(true)
           // Obter informações do usuário a partir do token
           const userInfo = getUserInfo()
-          console.log("Informações do usuário obtidas do token:", userInfo)
+          
 
           if (userInfo) {
             // Tentar buscar informações adicionais do usuário do backend
             try {
-              console.log("Buscando dados adicionais do usuário com ID:", userInfo.id)
+             
               const userData = await getUserById(userInfo.id)
-              console.log("Dados adicionais do usuário recebidos:", userData)
+           
 
               setUser({
                 ...userInfo,

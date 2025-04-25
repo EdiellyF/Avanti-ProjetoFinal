@@ -50,8 +50,7 @@ export const createItem = async (itemData) => {
       itemData.status = itemData.status.toUpperCase()
     }
 
-    // Log para depuração
-    console.log("Dados enviados para o servidor:", JSON.stringify(itemData, null, 2))
+    
 
 
     const response = await api.post("/item", itemData  )
