@@ -60,6 +60,15 @@ const UserProfile = () => {
     newPassword: "",
   })
 
+  const isFormModified = () => {
+    return (
+      formData.name !== userData?.name ||
+      formData.email !== userData?.email ||
+      formData.phone !== userData?.phone ||
+      (formData.currentPassword && formData.newPassword)
+    )
+  }
+
   useEffect(() => {
     const fetchUserData = async () => {
       if (!user || !user.id) {
@@ -144,10 +153,10 @@ const UserProfile = () => {
     try {
       setLoading(true)
       const updateData = {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
+        email: formData.email, 
       }
+
+      console.log("Dados do usuário atualizados:", updateData)
 
       if (formData.currentPassword && formData.newPassword) {
         updateData.currentPassword = formData.currentPassword
@@ -159,6 +168,7 @@ const UserProfile = () => {
       setEditMode(false)
 
       const updatedUserData = await getUserById(user.id)
+
       setUserData(updatedUserData)
     } catch (error) {
       console.error("Erro ao atualizar perfil:", error)
@@ -305,6 +315,7 @@ const UserProfile = () => {
                       startIcon={<Save />}
                       onClick={handleSubmit}
                       sx={{ flex: 1 }}
+                      disabled={!isFormModified()}
                     >
                       Salvar
                     </Button>
@@ -336,6 +347,8 @@ const UserProfile = () => {
                             </InputAdornment>
                           ),
                         }}
+                        disabled={true}
+                        
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -369,6 +382,8 @@ const UserProfile = () => {
                             </InputAdornment>
                           ),
                         }}
+
+                        disabled={true}
                       />
                     </Grid>
 

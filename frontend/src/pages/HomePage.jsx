@@ -121,7 +121,12 @@ const HomePage = () => {
           borderRadius: 3,
         }}
       >
-        <Container>
+        <Container 
+        sx={{
+          maxWidth: "lg", // Define um limite máximo para a largura
+          width: "100%", // Garante que o contêiner ocupe toda a largura disponível
+        }}
+        >
           <Typography variant="h5" component="h2" gutterBottom sx={{ mb: 3, fontWeight: "bold" }}>
             Itens Recentes
           </Typography>
@@ -147,9 +152,12 @@ const HomePage = () => {
               Nenhum item encontrado com os filtros selecionados.
             </Alert>
           ) : (
-            <Grid container spacing={3}>
+            <Grid container
+                  spacing={3}
+                
+                  >
               {filtered.map((item) => (
-                <Grid item xs={12} sm={6} md={4} key={item.id}>
+                <Grid item xs={12} sm={6} md={3} key={item.id}>
                   <ItemCard item={item} />
                 </Grid>
               ))}
