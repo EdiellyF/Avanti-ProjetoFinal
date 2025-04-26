@@ -1,5 +1,3 @@
-"use client"
-
 import { useEffect, useState } from "react"
 import { Typography, Box, Grid, Container, CircularProgress, Alert, Button, Paper, Divider } from "@mui/material"
 import { Add, Search } from "@mui/icons-material"
@@ -32,7 +30,6 @@ const HomePage = () => {
       setLoading(true)
       const [itemsResponse, categoriesResponse] = await Promise.all([getItems(), getCategories()])
 
-      // Verificar a estrutura da resposta e extrair os itens
       let itemsData = []
       if (itemsResponse) {
         if (itemsResponse.itens && Array.isArray(itemsResponse.itens)) {

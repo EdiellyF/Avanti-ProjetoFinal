@@ -7,7 +7,6 @@ import api from "./axios"
  */
 const decodeToken = (token) => {
   try {
-    // JWT tem o formato: header.payload.signature
     const base64Url = token.split(".")[1]
     const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/")
     const jsonPayload = decodeURIComponent(

@@ -14,10 +14,8 @@ export const formatDate = (dateString) => {
   export const formatPhone = (phone) => {
     if (!phone) return ""
   
-    // Remove non-numeric characters
     const numericPhone = phone.replace(/\D/g, "")
   
-    // Format based on length
     if (numericPhone.length === 11) {
       return `(${numericPhone.slice(0, 2)}) ${numericPhone.slice(2, 7)}-${numericPhone.slice(7)}`
     } else if (numericPhone.length === 10) {

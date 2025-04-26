@@ -1,5 +1,3 @@
-"use client"
-
 import { useEffect, useState, useContext } from "react"
 import { useNavigate } from "react-router-dom"
 import {
@@ -25,10 +23,6 @@ import Layout from "../components/Layout"
 
 import axios from "axios"
 import AddLocationIcon from '@mui/icons-material/AddLocation';
-
-
-
-
 
 export function RegisterItem() {
   const navigate = useNavigate()
@@ -87,10 +81,6 @@ export function RegisterItem() {
     
   }
   
-  
-
-
-
   function buscarEndereco() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(obterCoordenadas, mostrarErro);
@@ -103,11 +93,7 @@ export function RegisterItem() {
     alert("Erro ao obter localização: " + erro.message);
   }
   
-  
-
   useEffect(() => {
-
-
     window.preencherEndereco = function (dados) {
       if (dados && dados.display_name) {
         setFormData((prev) => ({
@@ -120,7 +106,6 @@ export function RegisterItem() {
       }
     }
     
-
     const fetchCategories = async () => {
       try {
         const response = await getCategories()
@@ -137,7 +122,6 @@ export function RegisterItem() {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
 
-    // Clear field-specific error when user types
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }))
     }
@@ -146,8 +130,7 @@ export function RegisterItem() {
   const handleImageChange = (e) => {
     const file = e.target.files[0]
     if (file) {
-      // Verificar o tamanho do arquivo (5MB máximo)
-      const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB em bytes
+      const MAX_FILE_SIZE = 5 * 1024 * 1024 
 
       if (file.size > MAX_FILE_SIZE) {
         setErrorMessage("A imagem é muito grande. O tamanho máximo permitido é 5MB.")
@@ -214,7 +197,6 @@ export function RegisterItem() {
     setErrorMessage("")
 
     try {
-      // Convert image to base64 if available
       let fotoBase64 = null
       if (formData.foto) {
         fotoBase64 = await convertToBase64(formData.foto)
@@ -228,7 +210,6 @@ export function RegisterItem() {
       const response = await createItem(itemData)
       setSuccessMessage("Item cadastrado com sucesso!")
 
-      // Reset form
       setFormData({
         nome: "",
         descricao: "",
@@ -241,7 +222,6 @@ export function RegisterItem() {
       })
       setPreview(null)
 
-      // Redirect after success
       setTimeout(() => {
         navigate("/")
       }, 2000)
@@ -263,10 +243,8 @@ export function RegisterItem() {
         img.src = event.target.result
 
         img.onload = () => {
-          // Criar um canvas para comprimir a imagem
           const canvas = document.createElement("canvas")
 
-          // Determinar o novo tamanho mantendo a proporção
           let width = img.width
           let height = img.height
           const MAX_WIDTH = 800
@@ -287,11 +265,9 @@ export function RegisterItem() {
           canvas.width = width
           canvas.height = height
 
-          // Desenhar a imagem redimensionada no canvas
           const ctx = canvas.getContext("2d")
           ctx.drawImage(img, 0, 0, width, height)
 
-          // Converter para base64 com qualidade reduzida (0.7 = 70% de qualidade)
           const dataUrl = canvas.toDataURL("image/jpeg", 0.7)
           resolve(dataUrl)
         }

@@ -1,5 +1,3 @@
-"use client"
-
 import { useEffect, useState, useContext } from "react"
 import { useParams, useNavigate, Link as RouterLink } from "react-router-dom"
 import {
@@ -95,7 +93,6 @@ const ItemDetail = () => {
 
       const response = await updateItem(id, { status: newStatus })
 
-      // Atualizar o item na interface
       setItem((prev) => ({
         ...prev,
         status: newStatus,

@@ -1,5 +1,3 @@
-"use client"
-
 import { useEffect, useState, useContext } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import {
@@ -58,13 +56,11 @@ export function EditItem() {
         setOriginalItem(itemResponse)
         setCategories(categoriesResponse || [])
 
-        // Verificar se o usuário tem permissão para editar este item
         if (user && itemResponse && itemResponse.usuarioId !== user.id && user.role !== "ADMIN") {
           setErrorMessage("Você não tem permissão para editar este item.")
           return
         }
 
-        // Preencher o formulário com os dados do item
         setFormData({
           nome: itemResponse.nome || "",
           descricao: itemResponse.descricao || "",
@@ -100,7 +96,6 @@ export function EditItem() {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
 
-    // Clear field-specific error when user types
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }))
     }
@@ -109,8 +104,7 @@ export function EditItem() {
   const handleImageChange = (e) => {
     const file = e.target.files[0]
     if (file) {
-      // Verificar o tamanho do arquivo (5MB máximo)
-      const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB em bytes
+      const MAX_FILE_SIZE = 5 * 1024 * 1024 
 
       if (file.size > MAX_FILE_SIZE) {
         setErrorMessage("A imagem é muito grande. O tamanho máximo permitido é 5MB.")
@@ -177,7 +171,6 @@ export function EditItem() {
     setErrorMessage("")
 
     try {
-      // Convert image to base64 if available
       let fotoBase64 = null
       if (formData.foto) {
         fotoBase64 = await convertToBase64(formData.foto)
@@ -185,13 +178,12 @@ export function EditItem() {
 
       const itemData = {
         ...formData,
-        foto: fotoBase64 || originalItem.foto, // Manter a foto original se não houver nova
+        foto: fotoBase64 || originalItem.foto, 
       }
 
       await updateItem(id, itemData)
       setSuccessMessage("Item atualizado com sucesso!")
 
-      // Redirect after success
       setTimeout(() => {
         navigate(`/item/${id}`)
       }, 2000)
@@ -213,10 +205,8 @@ export function EditItem() {
         img.src = event.target.result
 
         img.onload = () => {
-          // Criar um canvas para comprimir a imagem
           const canvas = document.createElement("canvas")
 
-          // Determinar o novo tamanho mantendo a proporção
           let width = img.width
           let height = img.height
           const MAX_WIDTH = 800
@@ -237,11 +227,9 @@ export function EditItem() {
           canvas.width = width
           canvas.height = height
 
-          // Desenhar a imagem redimensionada no canvas
           const ctx = canvas.getContext("2d")
           ctx.drawImage(img, 0, 0, width, height)
 
-          // Converter para base64 com qualidade reduzida (0.7 = 70% de qualidade)
           const dataUrl = canvas.toDataURL("image/jpeg", 0.7)
           resolve(dataUrl)
         }

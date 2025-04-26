@@ -35,11 +35,6 @@ const UserItems = () => {
           }
         }
 
-        console.log("Total de itens recebidos:", itemsData.length)
-        console.log("ID do usuário atual:", user?.id)
-
-        // Filtrar apenas os itens do usuário logado
-        // Verificar tanto usuarioId quanto o id do usuário nos dados do item
         if (user && user.id) {
           const userItems = itemsData.filter((item) => {
             const isUserItem = item.usuarioId === user.id || (item.user && item.user.id === user.id)
@@ -51,7 +46,6 @@ const UserItems = () => {
             return isUserItem
           })
 
-          console.log("Itens filtrados do usuário:", userItems.length)
           setItems(userItems)
           setFilteredItems(userItems)
         } else {

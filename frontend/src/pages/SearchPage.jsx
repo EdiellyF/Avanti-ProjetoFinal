@@ -71,12 +71,10 @@ const SearchPage = () => {
       )
     }
 
-    // Apply category filter
     if (filters.category) {
       result = result.filter((item) => item.categoriaId === filters.category)
     }
 
-    // Apply status filter
     if (filters.status) {
       result = result.filter((item) => item.status === filters.status)
     }
