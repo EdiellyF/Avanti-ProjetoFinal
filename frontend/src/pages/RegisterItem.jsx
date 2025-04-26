@@ -317,7 +317,7 @@ export function RegisterItem() {
 
   return (
     <Layout>
-      <Box sx={{ maxWidth: 900, mx: "auto" }}>
+      <Box sx={{ maxWidth: "100%", mx: "auto" }}>
         <Paper
           elevation={3}
           sx={{

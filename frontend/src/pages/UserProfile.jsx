@@ -154,6 +154,8 @@ const UserProfile = () => {
         phone: formData.phone,
       }
 
+      console.log("Dados do usuário atualizados:", updateData)
+
       if (formData.currentPassword && formData.newPassword) {
         updateData.currentPassword = formData.currentPassword
         updateData.newPassword = formData.newPassword
@@ -165,6 +167,7 @@ const UserProfile = () => {
 
       // Atualizar dados do usuário
       const updatedUserData = await getUserById(user.id)
+
       setUserData(updatedUserData)
     } catch (error) {
       console.error("Erro ao atualizar perfil:", error)
