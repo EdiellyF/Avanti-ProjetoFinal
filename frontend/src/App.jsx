@@ -24,8 +24,6 @@ const App = () => {
           <Route path="/buscar" element={<SearchPage />} />
           <Route path="/item/:id" element={<ItemDetail />} />
 
-
-          {/* Protected Routes */}
           <Route
             path="/item/novo"
             element={
@@ -61,7 +59,6 @@ const App = () => {
             }
           />
 
-          {/* Fallback route */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>

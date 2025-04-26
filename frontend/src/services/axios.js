@@ -6,7 +6,6 @@ const api = axios.create({
 
 
 
-// Interceptor para adicionar o token de autenticação em todas as requisições
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token")
@@ -20,22 +19,17 @@ api.interceptors.request.use(
   },
 )
 
-// Interceptor para tratamento de erros nas respostas
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Tratamento de erros específicos
     if (error.response) {
-      // Erro de autenticação
       if (error.response.status === 401) {
         localStorage.removeItem("token")
-        // Redirecionar para login se necessário
         if (window.location.pathname !== "/login" && window.location.pathname !== "/cadastrar") {
           window.location.href = "/login"
         }
       }
 
-      // Retorna a mensagem de erro do servidor se disponível
       if (error.response.data && error.response.data.message) {
         return Promise.reject(error.response.data.message)
       }

@@ -95,11 +95,6 @@ const UserProfile = () => {
           }
         }
 
-        console.log("Total de itens recebidos:", itemsData.length)
-        console.log("ID do usuário atual:", user.id)
-
-        // Filtrar apenas os itens do usuário logado
-        // Verificar tanto usuarioId quanto o id do usuário nos dados do item
         const userItems = itemsData.filter((item) => {
           const isUserItem = item.usuarioId === user.id || (item.user && item.user.id === user.id)
           if (isUserItem) {
@@ -163,7 +158,6 @@ const UserProfile = () => {
       setSuccessMessage("Perfil atualizado com sucesso!")
       setEditMode(false)
 
-      // Atualizar dados do usuário
       const updatedUserData = await getUserById(user.id)
       setUserData(updatedUserData)
     } catch (error) {
@@ -220,7 +214,7 @@ const UserProfile = () => {
         )}
 
         <Grid container spacing={4}>
-          {/* Seção de Perfil */}
+
           <Grid item xs={12} md={4}>
             <Paper elevation={3} sx={{ p: 3, borderRadius: 3, height: "100%" }}>
               <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mb: 3 }}>
@@ -320,7 +314,6 @@ const UserProfile = () => {
             </Paper>
           </Grid>
 
-          {/* Seção de Informações */}
           <Grid item xs={12} md={8}>
             <Paper elevation={3} sx={{ p: 3, borderRadius: 3 }}>
               {editMode ? (
@@ -486,7 +479,6 @@ const UserProfile = () => {
 
               <Divider sx={{ my: 3 }} />
 
-              {/* Seção de Itens */}
               <Box sx={{ mt: 3 }}>
                 <Typography variant="h6" gutterBottom>
                   Meus Itens

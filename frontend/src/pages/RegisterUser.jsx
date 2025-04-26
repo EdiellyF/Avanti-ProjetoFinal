@@ -108,14 +108,12 @@ function RegisterUser() {
       const response = await registerUser(userData)
       setSuccessMessage(true)
 
-      // Se o backend retornar um token, podemos fazer login automaticamente
       if (response && response.token) {
         setTimeout(() => {
           login(response.token)
           navigate("/")
         }, 2000)
       } else {
-        // Caso contrário, redirecionar para a página de login
         setTimeout(() => {
           navigate("/login")
         }, 2000)
@@ -160,7 +158,6 @@ function RegisterUser() {
           )}
 
           <Grid container spacing={4}>
-            {/* Coluna da Imagem */}
             <Grid item xs={12} md={4}>
               <Box
                 sx={{
@@ -193,7 +190,6 @@ function RegisterUser() {
               </Box>
             </Grid>
 
-            {/* Coluna do Formulário */}
             <Grid item xs={12} md={8}>
               <Box component="form" onSubmit={handleSubmit} noValidate>
                 <TextField

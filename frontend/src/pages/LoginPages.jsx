@@ -1,5 +1,3 @@
-"use client"
-
 import { useContext, useState } from "react"
 import { useNavigate, useLocation, Link as RouterLink } from "react-router-dom"
 import {
@@ -30,7 +28,6 @@ function LoginPages() {
   const navigate = useNavigate()
   const location = useLocation()
 
-  // Get the redirect path from location state or default to home
   const from = location.state?.from?.pathname || "/"
 
   const handleSubmit = async (e) => {

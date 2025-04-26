@@ -8,7 +8,6 @@ export const getItems = async (params = {}) => {
     if (page) queryParams.append("page", page)
     if (limit) queryParams.append("limit", limit)
 
-    // Adiciona outros parâmetros se existirem
     Object.entries(otherParams).forEach(([key, value]) => {
       if (value) queryParams.append(key, value)
     })
@@ -36,16 +35,13 @@ export const getItemById = async (id) => {
 
 export const createItem = async (itemData) => {
   try {
-    // Verificar se a data está no formato correto (ISO string)
     if (itemData.data && !(itemData.data instanceof Date) && typeof itemData.data === "string") {
-      // Garantir que a data esteja no formato ISO
       const dateObj = new Date(itemData.data)
       if (!isNaN(dateObj.getTime())) {
         itemData.data = dateObj.toISOString()
       }
     }
 
-    // Verificar se o status está em maiúsculas conforme esperado pelo backend
     if (itemData.status) {
       itemData.status = itemData.status.toUpperCase()
     }
@@ -58,7 +54,6 @@ export const createItem = async (itemData) => {
     return response.data
   } catch (error) {
     console.error("Erro ao criar item:", error)
-    // Log detalhado do erro
     if (error.response) {
       console.error("Resposta do servidor:", error.response.data)
       console.error("Status do erro:", error.response.status)
@@ -69,28 +64,21 @@ export const createItem = async (itemData) => {
 
 export const updateItem = async (id, itemData) => {
   try {
-    // Verificar se a data está no formato correto (ISO string)
     if (itemData.data && !(itemData.data instanceof Date) && typeof itemData.data === "string") {
-      // Garantir que a data esteja no formato ISO
       const dateObj = new Date(itemData.data)
       if (!isNaN(dateObj.getTime())) {
         itemData.data = dateObj.toISOString()
       }
     }
 
-    // Verificar se o status está em maiúsculas conforme esperado pelo backend
     if (itemData.status) {
       itemData.status = itemData.status.toUpperCase()
     }
-
-    // Log para depuração
-    console.log("Dados enviados para atualização:", JSON.stringify(itemData, null, 2))
 
     const response = await api.put(`/item/${id}`, itemData)
     return response.data
   } catch (error) {
     console.error(`Erro ao atualizar item ${id}:`, error)
-    // Log detalhado do erro
     if (error.response) {
       console.error("Resposta do servidor:", error.response.data)
       console.error("Status do erro:", error.response.status)
@@ -116,14 +104,11 @@ export const deleteItem = async (id, token) => {
   }
 }
 
-// Adicionar uma função específica para buscar itens do usuário
 export const getUserItems = async (userId) => {
   try {
-    // Buscar todos os itens
     const response = await api.get("/item")
     const allItems = response.data.itens || response.data || []
 
-    // Filtrar os itens do usuário
     if (userId) {
       return allItems.filter((item) => item.usuarioId === userId || (item.user && item.user.id === userId))
     }
