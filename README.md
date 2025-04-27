@@ -1,9 +1,11 @@
+[PROJECT__BADGE]: https://img.shields.io/badge/🌐visite_nosso_site-000?style=for-the-badge&logo=project
+[PROJECT__URL]: https://avanti-projeto-final.vercel.app/
+
 <p align="center">
     <img src="./.github/assets/logo_findy.png" width="200px">
 </p>
 
 <h1 align="center">🔍 Findy - Conectando quem perdeu com quem encontrou</h1>
-
 
 ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
@@ -16,17 +18,16 @@
 ![Vercel](https://img.shields.io/badge/vercel-000.svg?style=for-the-badge&logo=vercel&logoColor=white)
 ![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white)
 
-
 </br>
 <p align="center">
     <img src="./.github/assets/image_site.png" width="100%">
 </p>
 
-
 ## 📋 Descrição do Projeto
 
 Findy é uma aplicação web comunitária desenvolvida para facilitar a recuperação de objetos perdidos em espaços públicos como escolas, parques, faculdades, entre outros.Com uma interface simples e intuitiva, qualquer pessoa pode cadastrar ou buscar itens perdidos e encontrados. Por meio de filtros por categoria, localização e status, além de uma barra de pesquisa por palavras-chave, o sistema torna mais fácil reconectar objetos aos seus verdadeiros donos.O projeto tem como objetivo incentivar a solidariedade e a organização em ambientes coletivos, utilizando a tecnologia como aliada.
 
+[![project][PROJECT__BADGE]][PROJECT__URL]
 ---
 
 ## 🧱 Tecnologias Utilizadas
